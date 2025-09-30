@@ -1,0 +1,165 @@
+/* Mobile-specific FullCalendar styles */
+.calendar-container {
+  width: 100%;
+}
+
+/* Mobile toolbar improvements */
+@media (max-width: 768px) {
+  .calendar-container :global(.fc-toolbar) {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .calendar-container :global(.fc-toolbar-chunk) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .calendar-container :global(.fc-button-group) {
+    display: flex;
+  }
+
+  .calendar-container :global(.fc-button) {
+    padding: 6px 12px;
+    font-size: 14px;
+  }
+
+  .calendar-container :global(.fc-toolbar-title) {
+    font-size: 18px;
+    margin: 4px 0;
+  }
+
+  /* Day grid mobile improvements */
+  .calendar-container :global(.fc-daygrid-day-number) {
+    font-size: 14px;
+    padding: 4px;
+  }
+
+  .calendar-container :global(.fc-daygrid-day) {
+    min-height: 80px;
+  }
+
+  .calendar-container :global(.fc-daygrid-event) {
+    margin-bottom: 2px;
+    font-size: 11px;
+    padding: 1px 4px;
+  }
+
+  .calendar-container :global(.fc-event-title) {
+    font-weight: 500;
+  }
+
+  /* Time grid mobile improvements */
+  .calendar-container :global(.fc-timegrid-slot) {
+    height: 40px;
+  }
+
+  .calendar-container :global(.fc-timegrid-slot-label) {
+    font-size: 12px;
+  }
+
+  .calendar-container :global(.fc-timegrid-event) {
+    font-size: 11px;
+  }
+
+  /* Header improvements */
+  .calendar-container :global(.fc-col-header-cell) {
+    padding: 8px 4px;
+  }
+
+  .calendar-container :global(.fc-col-header-cell-cushion) {
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  /* More link styling */
+  .calendar-container :global(.fc-more-link) {
+    font-size: 11px;
+    color: #3b82f6;
+    font-weight: 500;
+  }
+}
+
+/* Tablet improvements */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .calendar-container :global(.fc-button) {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+
+  .calendar-container :global(.fc-toolbar-title) {
+    font-size: 20px;
+  }
+}
+
+/* General improvements for all sizes */
+.calendar-container :global(.fc-event) {
+  border-radius: 4px;
+  border: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-container :global(.fc-event:hover) {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.calendar-container :global(.fc-button-primary) {
+  background: linear-gradient(to right, #3b82f6, #6366f1);
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.calendar-container :global(.fc-button-primary:hover) {
+  background: linear-gradient(to right, #2563eb, #5b21b6);
+}
+
+.calendar-container :global(.fc-button-primary:disabled) {
+  background: #9ca3af;
+}
+
+/* Today button styling */
+.calendar-container :global(.fc-today-button) {
+  background: #10b981;
+  border: none;
+}
+
+.calendar-container :global(.fc-today-button:hover) {
+  background: #059669;
+}
+
+/* Today highlighting */
+.calendar-container :global(.fc-day-today) {
+  background-color: rgba(59, 130, 246, 0.05);
+}
+
+.calendar-container :global(.fc-day-today .fc-daygrid-day-number) {
+  background: #3b82f6;
+  color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+
+/* Popover improvements for mobile */
+.calendar-container :global(.fc-popover) {
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e5e7eb;
+}
+
+.calendar-container :global(.fc-popover-header) {
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 8px 12px;
+  font-weight: 600;
+}
+
+.calendar-container :global(.fc-popover-body) {
+  padding: 8px;
+}
