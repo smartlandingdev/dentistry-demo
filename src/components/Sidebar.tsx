@@ -13,9 +13,9 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggleCollapse }) => {
   const [isDesktopCollapsed, setIsDesktopCollapsed] = useState(false);
 
   const navigationItems = [
-    { name: t.sidebar.dashboard, href: '/', icon: LayoutDashboard },
-    { name: t.sidebar.calendar, href: '/calendar', icon: Calendar },
-    { name: t.sidebar.settings, href: '/settings', icon: Settings },
+    { name: t.sidebar.dashboard, href: '/sistema', icon: LayoutDashboard },
+    { name: t.sidebar.calendar, href: '/sistema/calendar', icon: Calendar },
+    { name: t.sidebar.settings, href: '/sistema/settings', icon: Settings },
   ];
 
   const toggleMobileMenu = () => {

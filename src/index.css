@@ -1,1 +1,26 @@
 @import "tailwindcss";
+
+body {
+  font-family: 'Poppins', sans-serif;
+}
+
+.font-sans {
+  font-family: 'Poppins', sans-serif;
+}
+
+.bg-gradient-radial {
+  background: radial-gradient(circle, var(--tw-gradient-stops));
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll {
+  animation: scroll 30s linear infinite;
+}
