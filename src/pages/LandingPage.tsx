@@ -49,14 +49,14 @@ export default function LandingPage() {
             <a href="#depoimentos" className="text-sm text-[#1C1C1C] hover:text-[#A8A29E] transition-colors">Depoimentos</a>
             <a href="#contato" className="text-sm text-[#1C1C1C] hover:text-[#A8A29E] transition-colors">Contato</a>
             <button
-              onClick={() => navigate('/sistema')}
+              onClick={() => navigate('/login')}
               className="text-[#1C1C1C] hover:text-[#A8A29E] transition-colors p-2"
             >
               <User className="w-5 h-5" strokeWidth={1.5} />
             </button>
           </nav>
           <button
-            onClick={() => navigate('/sistema')}
+            onClick={() => navigate('/login')}
             className="md:hidden text-[#1C1C1C] hover:text-[#A8A29E] transition-colors p-2"
           >
             <User className="w-5 h-5" strokeWidth={1.5} />

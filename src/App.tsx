@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { LanguageProvider } from './contexts/LanguageContext';
 import LandingPage from "./pages/LandingPage";
+import Login from "./pages/Login";
 import AppLayout from "./layouts/AppLayout";
 import Dashboard from "./pages/Dashboard";
 import CalendarPage from "./pages/CalendarPage";
@@ -13,6 +14,9 @@ function App() {
         <Routes>
           {/* Landing Page */}
           <Route path="/" element={<LandingPage />} />
+
+          {/* Login */}
+          <Route path="/login" element={<Login />} />
 
           {/* Sistema de Agendamento */}
           <Route path="/sistema" element={<AppLayout />}>
