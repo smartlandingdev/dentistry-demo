@@ -8,7 +8,7 @@ export default function AppLayout() {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
+    <div className="min-h-screen bg-[#F2EFEA] flex flex-col">
       <Header />
 
       <div className="flex flex-1">

@@ -210,8 +210,26 @@ export default function LandingPage() {
       </section>
 
       {/* Como Funciona */}
-      <section id="como-funciona" className="py-20 px-6 bg-[#F2EFEA]">
-        <div className="max-w-5xl mx-auto">
+      <section id="como-funciona" className="relative py-20 px-6 overflow-hidden min-h-[600px]">
+        {/* Cor base à esquerda */}
+        <div className="absolute inset-0 bg-[#F2EFEA]"></div>
+
+        {/* Imagem à direita com degradê vertical e horizontal */}
+        <div className="absolute inset-0">
+          <img
+            src="https://ipfinstituto.com/wp-content/uploads/2021/12/em-um-dentista-com-um-sorriso-1024x683.webp"
+            alt="Sorriso"
+            className="absolute right-0 w-1/2 h-full object-cover"
+            style={{
+              maskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0.6) 70%, rgba(0,0,0,0.8) 80%, black 90%), linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.3) 15%, black 30%, black 70%, rgba(0,0,0,0.3) 85%, transparent 100%)',
+              WebkitMaskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0.6) 70%, rgba(0,0,0,0.8) 80%, black 90%), linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.3) 15%, black 30%, black 70%, rgba(0,0,0,0.3) 85%, transparent 100%)',
+              maskComposite: 'intersect',
+              WebkitMaskComposite: 'source-in',
+            }}
+          />
+        </div>
+
+        <div className="relative z-10 max-w-5xl mx-auto">
           <h3 className="text-4xl font-bold text-[#1C1C1C] text-center mb-16">
             Como funciona
           </h3>

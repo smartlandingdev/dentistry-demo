@@ -19,8 +19,8 @@ const Calendar: React.FC<CalendarProps> = () => {
       customerName: 'John Smith',
       service: 'Consultation',
       notes: 'Initial consultation meeting',
-      backgroundColor: '#3b82f6',
-      borderColor: '#2563eb',
+      backgroundColor: '#1C1C1C',
+      borderColor: '#1C1C1C',
     },
     {
       id: '2',
@@ -30,8 +30,8 @@ const Calendar: React.FC<CalendarProps> = () => {
       customerName: 'Sarah Johnson',
       service: 'Training Session',
       notes: 'Advanced training session',
-      backgroundColor: '#10b981',
-      borderColor: '#059669',
+      backgroundColor: '#A8A29E',
+      borderColor: '#A8A29E',
     },
   ]);
 
@@ -119,8 +119,8 @@ const Calendar: React.FC<CalendarProps> = () => {
       customerName: eventData.customerName,
       service: eventData.service,
       notes: eventData.notes,
-      backgroundColor: '#3b82f6',
-      borderColor: '#2563eb',
+      backgroundColor: '#1C1C1C',
+      borderColor: '#1C1C1C',
     };
 
     if (selectedEvent) {
@@ -146,7 +146,7 @@ const Calendar: React.FC<CalendarProps> = () => {
   };
 
   return (
-    <div className={`bg-white/80 backdrop-blur-sm rounded-lg shadow-sm border border-slate-200 p-3 md:p-6 overflow-hidden ${styles['calendar-container']}`}>
+    <div className={`bg-[#E8E4DF] border border-[#1C1C1C]/20 p-3 md:p-6 overflow-hidden ${styles['calendar-container']}`}>
       <FullCalendar
         ref={calendarRef}
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -254,15 +254,15 @@ const Calendar: React.FC<CalendarProps> = () => {
       {selectedEvent && isModalOpen && (
         <button
           onClick={handleDeleteEvent}
-          className={`fixed bg-red-600 hover:bg-red-700 text-white rounded-full shadow-lg transition-colors z-50 ${
+          className={`fixed bg-[#1C1C1C] hover:bg-[#A8A29E] text-[#F2EFEA] shadow-lg transition-colors z-50 ${
             isMobile
               ? 'bottom-20 right-4 p-3'
               : 'bottom-4 right-4 p-3'
           }`}
           title="Delete Appointment"
         >
-          <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+          <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
           </svg>
         </button>
       )}

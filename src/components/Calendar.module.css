@@ -76,7 +76,7 @@
   /* More link styling */
   .calendar-container :global(.fc-more-link) {
     font-size: 11px;
-    color: #3b82f6;
+    color: #1C1C1C;
     font-weight: 500;
   }
 }
@@ -95,49 +95,56 @@
 
 /* General improvements for all sizes */
 .calendar-container :global(.fc-event) {
-  border-radius: 4px;
+  border-radius: 0;
   border: none;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: none;
 }
 
 .calendar-container :global(.fc-event:hover) {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  opacity: 0.85;
 }
 
 .calendar-container :global(.fc-button-primary) {
-  background: linear-gradient(to right, #3b82f6, #6366f1);
+  background: #1C1C1C;
   border: none;
-  border-radius: 6px;
+  border-radius: 0;
   font-weight: 500;
+  color: #F2EFEA;
 }
 
 .calendar-container :global(.fc-button-primary:hover) {
-  background: linear-gradient(to right, #2563eb, #5b21b6);
+  background: #A8A29E;
 }
 
 .calendar-container :global(.fc-button-primary:disabled) {
-  background: #9ca3af;
+  background: #D6CBB8;
+}
+
+.calendar-container :global(.fc-button-primary:not(:disabled):active),
+.calendar-container :global(.fc-button-primary:not(:disabled).fc-button-active) {
+  background: #1C1C1C;
 }
 
 /* Today button styling */
 .calendar-container :global(.fc-today-button) {
-  background: #10b981;
+  background: #1C1C1C;
   border: none;
+  color: #F2EFEA;
 }
 
 .calendar-container :global(.fc-today-button:hover) {
-  background: #059669;
+  background: #A8A29E;
 }
 
 /* Today highlighting */
 .calendar-container :global(.fc-day-today) {
-  background-color: rgba(59, 130, 246, 0.05);
+  background-color: rgba(28, 28, 28, 0.05);
 }
 
 .calendar-container :global(.fc-day-today .fc-daygrid-day-number) {
-  background: #3b82f6;
-  color: white;
-  border-radius: 50%;
+  background: #1C1C1C;
+  color: #F2EFEA;
+  border-radius: 0;
   width: 24px;
   height: 24px;
   display: flex;
@@ -148,18 +155,66 @@
 
 /* Popover improvements for mobile */
 .calendar-container :global(.fc-popover) {
-  border-radius: 8px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-  border: 1px solid #e5e7eb;
+  border-radius: 0;
+  box-shadow: none;
+  border: 1px solid rgba(28, 28, 28, 0.2);
 }
 
 .calendar-container :global(.fc-popover-header) {
-  background: #f9fafb;
-  border-bottom: 1px solid #e5e7eb;
+  background: #E8E4DF;
+  border-bottom: 1px solid rgba(28, 28, 28, 0.2);
   padding: 8px 12px;
   font-weight: 600;
+  color: #1C1C1C;
 }
 
 .calendar-container :global(.fc-popover-body) {
   padding: 8px;
+  background: #F2EFEA;
+}
+
+/* Border colors */
+.calendar-container :global(.fc-scrollgrid),
+.calendar-container :global(.fc-scrollgrid td),
+.calendar-container :global(.fc-scrollgrid th) {
+  border-color: rgba(28, 28, 28, 0.2);
+}
+
+/* Header styling */
+.calendar-container :global(.fc-col-header) {
+  background: #E8E4DF;
+}
+
+.calendar-container :global(.fc-col-header-cell) {
+  color: #1C1C1C;
+  font-weight: 600;
+}
+
+/* Toolbar title */
+.calendar-container :global(.fc-toolbar-title) {
+  color: #1C1C1C;
+  font-weight: 700;
+}
+
+/* Time grid */
+.calendar-container :global(.fc-timegrid-slot-label) {
+  color: #A8A29E;
+}
+
+.calendar-container :global(.fc-timegrid-slot) {
+  border-color: rgba(28, 28, 28, 0.1);
+}
+
+/* Day grid */
+.calendar-container :global(.fc-daygrid-day-number) {
+  color: #1C1C1C;
+}
+
+/* More link */
+.calendar-container :global(.fc-more-link) {
+  color: #1C1C1C;
+}
+
+.calendar-container :global(.fc-more-link:hover) {
+  color: #A8A29E;
 }

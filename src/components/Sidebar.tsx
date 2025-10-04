@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Calendar, Settings, Menu, X, ChevronLeft } from 'lucide-react';
+import { LayoutDashboard, Calendar, Users, Settings, Menu, X, ChevronLeft } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 interface SidebarProps {
@@ -15,6 +15,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggleCollapse }) => {
   const navigationItems = [
     { name: t.sidebar.dashboard, href: '/sistema', icon: LayoutDashboard },
     { name: t.sidebar.calendar, href: '/sistema/calendar', icon: Calendar },
+    { name: 'Pacientes', href: '/sistema/clients', icon: Users },
     { name: t.sidebar.settings, href: '/sistema/settings', icon: Settings },
   ];
 
@@ -31,13 +32,13 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggleCollapse }) => {
   return (
     <>
       <button
-        className="md:hidden fixed top-4 left-4 z-50 p-2 text-gray-600 hover:text-gray-900 bg-white rounded-lg shadow-md"
+        className="md:hidden fixed top-4 left-4 z-50 p-2 text-[#1C1C1C] hover:text-[#A8A29E] bg-[#F2EFEA] border border-[#1C1C1C]/20"
         onClick={toggleMobileMenu}
       >
-        {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+        {isMobileMenuOpen ? <X className="w-5 h-5" strokeWidth={1.5} /> : <Menu className="w-5 h-5" strokeWidth={1.5} />}
       </button>
 
-      <div className={`fixed inset-y-0 left-0 z-40 bg-white/95 backdrop-blur-md border-r border-slate-200 transform transition-all duration-300 ease-in-out ${
+      <div className={`fixed inset-y-0 left-0 z-40 bg-[#E8E4DF] border-r border-[#1C1C1C]/20 transform transition-all duration-300 ease-in-out ${
         isDesktopCollapsed ? 'w-16' : 'w-64'
       } ${
         isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
@@ -45,13 +46,16 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggleCollapse }) => {
         <div className="flex flex-col h-full">
           <div className="flex-1 px-4 py-6">
             <div className="mt-16 md:mt-8">
-              <div className="hidden md:flex justify-end mb-4">
+              <div className="hidden md:flex justify-between items-center mb-8 px-4">
+                {!isDesktopCollapsed && (
+                  <h2 className="text-xl font-semibold text-[#1C1C1C]">SmileCare</h2>
+                )}
                 <button
                   onClick={toggleDesktopSidebar}
-                  className="p-1.5 text-gray-400 hover:text-gray-600 transition-colors"
+                  className="p-1.5 text-[#A8A29E] hover:text-[#1C1C1C] transition-colors"
                   title={isDesktopCollapsed ? t.sidebar.expandSidebar : t.sidebar.collapseSidebar}
                 >
-                  <ChevronLeft className={`w-4 h-4 transition-transform duration-200 ${isDesktopCollapsed ? 'rotate-180' : ''}`} />
+                  <ChevronLeft className={`w-4 h-4 transition-transform duration-200 ${isDesktopCollapsed ? 'rotate-180' : ''}`} strokeWidth={1.5} />
                 </button>
               </div>
 
@@ -63,16 +67,16 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggleCollapse }) => {
                       key={item.name}
                       to={item.href}
                       className={({ isActive }) =>
-                        `flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 ${
+                        `flex items-center px-4 py-3 text-sm font-medium transition-colors duration-200 ${
                           isActive
-                            ? 'bg-blue-50/80 text-blue-700 border-r-2 border-blue-700'
-                            : 'text-slate-600 hover:bg-slate-50/80 hover:text-slate-900'
+                            ? 'bg-[#1C1C1C] text-[#F2EFEA]'
+                            : 'text-[#1C1C1C] hover:bg-[#D6CBB8]'
                         }`
                       }
                       onClick={() => setIsMobileMenuOpen(false)}
                       title={isDesktopCollapsed ? item.name : ''}
                     >
-                      <Icon className="w-5 h-5 mr-3 flex-shrink-0" />
+                      <Icon className="w-5 h-5 mr-3 flex-shrink-0" strokeWidth={1.5} />
                       <span className={`${isDesktopCollapsed ? 'hidden' : 'block'}`}>
                         {item.name}
                       </span>
@@ -83,8 +87,8 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggleCollapse }) => {
             </div>
           </div>
 
-          <div className={`border-t border-slate-200 p-4 ${isDesktopCollapsed ? 'text-center' : ''}`}>
-            <div className={`text-xs text-slate-500 ${isDesktopCollapsed ? 'hidden' : 'text-center'}`}>
+          <div className={`border-t border-[#1C1C1C]/20 p-4 ${isDesktopCollapsed ? 'text-center' : ''}`}>
+            <div className={`text-xs text-[#A8A29E] ${isDesktopCollapsed ? 'hidden' : 'text-center'}`}>
               {t.sidebar.version}
             </div>
           </div>
@@ -93,7 +97,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggleCollapse }) => {
 
       {isMobileMenuOpen && (
         <div
-          className="fixed inset-0 z-30 bg-gray-600 bg-opacity-50 md:hidden"
+          className="fixed inset-0 z-30 bg-[#1C1C1C] bg-opacity-50 md:hidden"
           onClick={toggleMobileMenu}
         />
       )}
