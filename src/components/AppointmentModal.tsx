@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { X, Calendar, Clock, User, FileText, Phone, Mail } from 'lucide-react';
-import { useLanguage } from '../contexts/LanguageContext';
 
 interface AppointmentModalProps {
   isOpen: boolean;
@@ -17,7 +16,6 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
   selectedDate,
   selectedTime
 }) => {
-  const { t } = useLanguage();
   const [formData, setFormData] = useState({
     clientName: '',
     clientPhone: '',

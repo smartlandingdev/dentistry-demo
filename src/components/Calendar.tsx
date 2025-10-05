@@ -4,36 +4,26 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import type { AppointmentEvent, EventFormData } from '../types';
+import { useAppointment } from '../contexts/AppointmentContext';
 import EventModal from './EventModal';
 import styles from './Calendar.module.css';
 
 interface CalendarProps {}
 
 const Calendar: React.FC<CalendarProps> = () => {
-  const [events, setEvents] = useState<AppointmentEvent[]>([
-    {
-      id: '1',
-      title: 'Meeting with Client A',
-      start: new Date(Date.now() + 2 * 60 * 60 * 1000),
-      end: new Date(Date.now() + 3 * 60 * 60 * 1000),
-      customerName: 'John Smith',
-      service: 'Consultation',
-      notes: 'Initial consultation meeting',
-      backgroundColor: '#1C1C1C',
-      borderColor: '#1C1C1C',
-    },
-    {
-      id: '2',
-      title: 'Training Session',
-      start: new Date(Date.now() + 24 * 60 * 60 * 1000 + 14 * 60 * 60 * 1000),
-      end: new Date(Date.now() + 24 * 60 * 60 * 1000 + 15.5 * 60 * 60 * 1000),
-      customerName: 'Sarah Johnson',
-      service: 'Training Session',
-      notes: 'Advanced training session',
-      backgroundColor: '#A8A29E',
-      borderColor: '#A8A29E',
-    },
-  ]);
+  // Usa o context para gerenciar eventos
+  const {
+    events,
+    addEvent,
+    updateEvent,
+    deleteEvent,
+    getEventById,
+    isCalComEnabled,
+    syncStatus,
+    syncWithCalCom,
+    isLoading,
+    error,
+  } = useAppointment();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<AppointmentEvent | null>(null);
@@ -66,7 +56,7 @@ const Calendar: React.FC<CalendarProps> = () => {
   };
 
   const handleEventClick = (clickInfo: any) => {
-    const event = events.find(e => e.id === clickInfo.event.id);
+    const event = getEventById(clickInfo.event.id);
     if (event) {
       setSelectedEvent(event);
       setIsModalOpen(true);
@@ -75,32 +65,18 @@ const Calendar: React.FC<CalendarProps> = () => {
 
   const handleEventDrop = (dropInfo: any) => {
     const eventId = dropInfo.event.id;
-    const updatedEvents = events.map(event => {
-      if (event.id === eventId) {
-        return {
-          ...event,
-          start: dropInfo.event.start,
-          end: dropInfo.event.end,
-        };
-      }
-      return event;
+    updateEvent(eventId, {
+      start: dropInfo.event.start,
+      end: dropInfo.event.end,
     });
-    setEvents(updatedEvents);
   };
 
   const handleEventResize = (resizeInfo: any) => {
     const eventId = resizeInfo.event.id;
-    const updatedEvents = events.map(event => {
-      if (event.id === eventId) {
-        return {
-          ...event,
-          start: resizeInfo.event.start,
-          end: resizeInfo.event.end,
-        };
-      }
-      return event;
+    updateEvent(eventId, {
+      start: resizeInfo.event.start,
+      end: resizeInfo.event.end,
     });
-    setEvents(updatedEvents);
   };
 
   const generateEventId = () => {
@@ -111,7 +87,7 @@ const Calendar: React.FC<CalendarProps> = () => {
     const startDateTime = new Date(`${eventData.date}T${eventData.startTime}`);
     const endDateTime = new Date(`${eventData.date}T${eventData.endTime}`);
 
-    const newEvent: AppointmentEvent = {
+    const eventPayload: AppointmentEvent = {
       id: selectedEvent?.id || generateEventId(),
       title: `${eventData.service} - ${eventData.customerName}`,
       start: startDateTime,
@@ -121,20 +97,21 @@ const Calendar: React.FC<CalendarProps> = () => {
       notes: eventData.notes,
       backgroundColor: '#1C1C1C',
       borderColor: '#1C1C1C',
+      source: 'local',
     };
 
     if (selectedEvent) {
-      setEvents(events.map(event =>
-        event.id === selectedEvent.id ? newEvent : event
-      ));
+      // Atualiza evento existente
+      updateEvent(selectedEvent.id, eventPayload);
     } else {
-      setEvents([...events, newEvent]);
+      // Adiciona novo evento
+      addEvent(eventPayload);
     }
   };
 
   const handleDeleteEvent = () => {
     if (selectedEvent) {
-      setEvents(events.filter(event => event.id !== selectedEvent.id));
+      deleteEvent(selectedEvent.id);
       setIsModalOpen(false);
     }
   };
@@ -147,6 +124,44 @@ const Calendar: React.FC<CalendarProps> = () => {
 
   return (
     <div className={`bg-[#E8E4DF] border border-[#1C1C1C]/20 p-3 md:p-6 overflow-hidden ${styles['calendar-container']}`}>
+      {/* Cal.com Sync Status */}
+      {isCalComEnabled && (
+        <div className="mb-4 p-3 bg-white/50 border border-[#1C1C1C]/10 flex items-center justify-between gap-2 flex-wrap">
+          <div className="flex items-center gap-2 flex-1 min-w-[200px]">
+            <div
+              className={`w-2 h-2 rounded-full ${
+                syncStatus?.syncing
+                  ? 'bg-yellow-500 animate-pulse'
+                  : syncStatus?.error
+                  ? 'bg-red-500'
+                  : 'bg-green-500'
+              }`}
+            />
+            <span className="text-xs md:text-sm text-[#1C1C1C]">
+              {syncStatus?.syncing
+                ? 'Sincronizando...'
+                : syncStatus?.error
+                ? `Erro: ${syncStatus.error}`
+                : `Cal.com: ${syncStatus?.syncedEvents || 0} eventos`}
+            </span>
+          </div>
+          <button
+            onClick={syncWithCalCom}
+            disabled={isLoading}
+            className="px-3 py-1 text-xs md:text-sm bg-[#1C1C1C] text-[#F2EFEA] hover:bg-[#A8A29E] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
+            {isLoading ? 'Sincronizando...' : 'Sincronizar'}
+          </button>
+        </div>
+      )}
+
+      {/* Error Message */}
+      {error && !isCalComEnabled && (
+        <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 text-sm">
+          {error}
+        </div>
+      )}
+
       <FullCalendar
         ref={calendarRef}
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}

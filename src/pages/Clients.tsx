@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Search, Plus, Phone, Mail, Calendar, Edit, Trash2 } from 'lucide-react';
-import { useLanguage } from '../contexts/LanguageContext';
 
 interface Client {
   id: number;
@@ -13,7 +12,6 @@ interface Client {
 }
 
 const Clients: React.FC = () => {
-  const { t } = useLanguage();
   const [searchTerm, setSearchTerm] = useState('');
 
   // Dados de exemplo
