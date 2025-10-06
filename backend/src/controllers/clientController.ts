@@ -4,7 +4,7 @@ import { ClientService } from '../services/clientService.js';
 const clientService = new ClientService();
 
 export class ClientController {
-  async getClients(req: Request, res: Response): Promise<void> {
+  async getClients(_req: Request, res: Response): Promise<void> {
     try {
       const clients = await clientService.getClientsWithAppointments();
       res.json({

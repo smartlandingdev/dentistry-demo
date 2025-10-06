@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import clientRoutes from './routes/clientRoutes.js';
+import appointmentRoutes from './routes/appointmentRoutes.js';
 
 dotenv.config();
 
@@ -29,6 +30,7 @@ app.get('/health', (req, res) => {
 
 // API Routes
 app.use('/api/clients', clientRoutes);
+app.use('/api/appointments', appointmentRoutes);
 
 // Error handling middleware
 app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
