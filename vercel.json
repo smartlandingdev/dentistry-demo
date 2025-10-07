@@ -1,6 +1,8 @@
 {
   "rewrites": [
     { "source": "/api/clients", "destination": "/api/clients" },
+    { "source": "/api/appointments", "destination": "/api/appointments" },
+    { "source": "/api/appointments/upcoming", "destination": "/api/appointments/upcoming" },
     { "source": "/api/calcom/status", "destination": "/api/calcom/status" },
     { "source": "/api/calcom/bookings", "destination": "/api/calcom/bookings" },
     { "source": "/api/calcom/bookings/upcoming", "destination": "/api/calcom/bookings/upcoming" },
