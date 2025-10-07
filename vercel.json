@@ -1,0 +1,21 @@
+{
+  "rewrites": [
+    { "source": "/api/clients", "destination": "/api/clients" },
+    { "source": "/api/calcom/status", "destination": "/api/calcom/status" },
+    { "source": "/api/calcom/bookings", "destination": "/api/calcom/bookings" },
+    { "source": "/api/calcom/bookings/upcoming", "destination": "/api/calcom/bookings/upcoming" },
+    { "source": "/api/calcom/bookings/:id", "destination": "/api/calcom/bookings/[id]" },
+    { "source": "/api/calcom/events", "destination": "/api/calcom/events" }
+  ],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Credentials", "value": "true" },
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET,DELETE,PATCH,POST,PUT,OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version" }
+      ]
+    }
+  ]
+}
