@@ -3,26 +3,31 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import axios from 'axios';
 import type { AppointmentEvent, EventFormData } from '../types';
 import { useAppointment } from '../contexts/AppointmentContext';
 import EventModal from './EventModal';
 import styles from './Calendar.module.css';
 
+interface SupabaseAppointment {
+  id_agendamento: string;
+  id_cliente: number;
+  clientName: string;
+  hora_inicio: string;
+  hora_fim: string;
+  finalizado: boolean;
+  cancelado: boolean;
+}
+
 interface CalendarProps {}
 
 const Calendar: React.FC<CalendarProps> = () => {
-  // Usa o context para gerenciar eventos
+  // Usa o context para gerenciar eventos locais
   const {
-    events,
     addEvent,
     updateEvent,
     deleteEvent,
     getEventById,
-    isCalComEnabled,
-    syncStatus,
-    syncWithCalCom,
-    isLoading,
-    error,
   } = useAppointment();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,6 +35,11 @@ const Calendar: React.FC<CalendarProps> = () => {
   const [selectedDate, setSelectedDate] = useState<string>('');
   const [selectedTime, setSelectedTime] = useState<string>('');
   const [isMobile, setIsMobile] = useState(false);
+
+  // Supabase appointments
+  const [appointments, setAppointments] = useState<SupabaseAppointment[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const calendarRef = useRef<FullCalendar>(null);
 
@@ -45,6 +55,36 @@ const Calendar: React.FC<CalendarProps> = () => {
     return () => {
       window.removeEventListener('resize', checkScreenSize);
     };
+  }, []);
+
+  // Fetch appointments from Supabase via backend API
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const response = await axios.get('http://localhost:3001/api/appointments');
+
+        if (response.data.success) {
+          console.log('📅 Appointments loaded from Supabase:', response.data.data.length);
+          setAppointments(response.data.data);
+        } else {
+          setError('Failed to load appointments');
+        }
+      } catch (err) {
+        console.error('Error fetching appointments:', err);
+        setError('Error loading appointments. Make sure backend is running.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAppointments();
+
+    // Refresh every 2 minutes
+    const interval = setInterval(fetchAppointments, 2 * 60 * 1000);
+    return () => clearInterval(interval);
   }, []);
 
   const handleDateSelect = (selectInfo: any) => {
@@ -80,7 +120,7 @@ const Calendar: React.FC<CalendarProps> = () => {
   };
 
   const generateEventId = () => {
-    return Math.random().toString(36).substr(2, 9);
+    return Math.random().toString(36).substring(2, 9);
   };
 
   const handleSaveEvent = (eventData: EventFormData) => {
@@ -122,41 +162,49 @@ const Calendar: React.FC<CalendarProps> = () => {
     endTime: '20:00',
   };
 
+  // Convert Supabase appointments to FullCalendar events
+  const calendarEvents = appointments.map(apt => ({
+    id: `appointment-${apt.id_agendamento}`,
+    title: apt.clientName,
+    start: apt.hora_inicio,
+    end: apt.hora_fim,
+    backgroundColor: apt.finalizado ? '#059669' : '#1C1C1C',
+    borderColor: apt.finalizado ? '#047857' : '#0C0C0C',
+    extendedProps: {
+      appointmentId: apt.id_agendamento,
+      clientId: apt.id_cliente,
+      clientName: apt.clientName,
+      finalizado: apt.finalizado,
+      source: 'supabase'
+    }
+  }));
+
   return (
     <div className={`bg-[#E8E4DF] border border-[#1C1C1C]/20 p-3 md:p-6 overflow-hidden ${styles['calendar-container']}`}>
-      {/* Cal.com Sync Status */}
-      {isCalComEnabled && (
-        <div className="mb-4 p-3 bg-white/50 border border-[#1C1C1C]/10 flex items-center justify-between gap-2 flex-wrap">
-          <div className="flex items-center gap-2 flex-1 min-w-[200px]">
-            <div
-              className={`w-2 h-2 rounded-full ${
-                syncStatus?.syncing
-                  ? 'bg-yellow-500 animate-pulse'
-                  : syncStatus?.error
-                  ? 'bg-red-500'
-                  : 'bg-green-500'
-              }`}
-            />
-            <span className="text-xs md:text-sm text-[#1C1C1C]">
-              {syncStatus?.syncing
-                ? 'Sincronizando...'
-                : syncStatus?.error
-                ? `Erro: ${syncStatus.error}`
-                : `Cal.com: ${syncStatus?.syncedEvents || 0} eventos`}
-            </span>
-          </div>
-          <button
-            onClick={syncWithCalCom}
-            disabled={isLoading}
-            className="px-3 py-1 text-xs md:text-sm bg-[#1C1C1C] text-[#F2EFEA] hover:bg-[#A8A29E] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-          >
-            {isLoading ? 'Sincronizando...' : 'Sincronizar'}
-          </button>
+      {/* Appointments Status */}
+      <div className="mb-4 p-3 bg-white/50 border border-[#1C1C1C]/10 flex items-center justify-between gap-2 flex-wrap">
+        <div className="flex items-center gap-2 flex-1 min-w-[200px]">
+          <div
+            className={`w-2 h-2 rounded-full ${
+              loading
+                ? 'bg-yellow-500 animate-pulse'
+                : error
+                ? 'bg-red-500'
+                : 'bg-green-500'
+            }`}
+          />
+          <span className="text-xs md:text-sm text-[#1C1C1C]">
+            {loading
+              ? 'Carregando agendamentos...'
+              : error
+              ? 'Erro ao carregar'
+              : `${appointments.length} agendamento${appointments.length !== 1 ? 's' : ''}`}
+          </span>
         </div>
-      )}
+      </div>
 
       {/* Error Message */}
-      {error && !isCalComEnabled && (
+      {error && (
         <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 text-sm">
           {error}
         </div>
@@ -191,7 +239,7 @@ const Calendar: React.FC<CalendarProps> = () => {
         height={isMobile ? 'auto' : 'auto'}
         aspectRatio={isMobile ? 1.0 : 1.35}
         contentHeight={isMobile ? 'auto' : 600}
-        events={events}
+        events={calendarEvents}
         select={handleDateSelect}
         eventClick={handleEventClick}
         eventDrop={!isMobile ? handleEventDrop : undefined}
