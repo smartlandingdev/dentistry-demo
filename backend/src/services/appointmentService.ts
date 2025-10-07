@@ -49,6 +49,7 @@ export class AppointmentService {
           hora_inicio: apt.hora_inicio,
           hora_fim: apt.hora_fim,
           finalizado: apt.finalizado,
+          cancelado: apt.cancelado,
         })) || [];
 
       return appointments;

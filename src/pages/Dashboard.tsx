@@ -11,6 +11,8 @@ import { useLanguage } from "../contexts/LanguageContext";
 import { useAppointment } from "../contexts/AppointmentContext";
 import AppointmentModal from "../components/AppointmentModal";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+
 interface Appointment {
   id_agendamento: string;
   id_cliente: string;
@@ -40,14 +42,14 @@ const Dashboard: React.FC = () => {
       try {
         // Todos os agendamentos
         const resAll = await axios.get(
-          "http://localhost:3001/api/appointments"
+          `${API_BASE_URL}/appointments`
         );
         const allAppointments: Appointment[] = resAll.data.data || [];
         setAppointments(allAppointments);
 
         // Próximos agendamentos
         const resUpcoming = await axios.get(
-          "http://localhost:3001/api/appointments/upcoming"
+          `${API_BASE_URL}/appointments/upcoming`
         );
         const upcoming: Appointment[] = (resUpcoming.data.data || []).map(
           (a: Appointment) => ({
