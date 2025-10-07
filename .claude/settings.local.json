@@ -9,7 +9,9 @@
       "Bash(lsof:*)",
       "Bash(xargs -r kill -9)",
       "Bash(curl:*)",
-      "Bash(vercel:*)"
+      "Bash(vercel:*)",
+      "Bash(cat:*)",
+      "Bash(npm install:*)"
     ],
     "deny": [],
     "ask": []
