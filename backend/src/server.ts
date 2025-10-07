@@ -14,7 +14,7 @@ const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
 // Middleware
 app.use(cors({
   origin: process.env.NODE_ENV === 'production'
-    ? [FRONTEND_URL, 'https://your-app.vercel.app'] // Replace with your actual Vercel URL
+    ? ['https://dentistry.smartlanding.com.br', FRONTEND_URL]
     : FRONTEND_URL,
   credentials: true,
 }));

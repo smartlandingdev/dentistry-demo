@@ -56,8 +56,7 @@ const Clients: React.FC = () => {
           <p className="font-medium">Erro ao carregar pacientes</p>
           <p className="text-sm mt-1">{error}</p>
           <p className="text-sm mt-2">
-            Certifique-se de que o servidor backend está rodando em
-            http://localhost:3001
+            Certifique-se de que o servidor backend está rodando
           </p>
         </div>
       </div>

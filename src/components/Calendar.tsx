@@ -9,6 +9,8 @@ import { useAppointment } from '../contexts/AppointmentContext';
 import EventModal from './EventModal';
 import styles from './Calendar.module.css';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+
 interface SupabaseAppointment {
   id_agendamento: string;
   id_cliente: number;
@@ -64,7 +66,7 @@ const Calendar: React.FC<CalendarProps> = () => {
       setError(null);
 
       try {
-        const response = await axios.get('http://localhost:3001/api/appointments');
+        const response = await axios.get(`${API_BASE_URL}/appointments`);
 
         if (response.data.success) {
           console.log('📅 Appointments loaded from Supabase:', response.data.data.length);
