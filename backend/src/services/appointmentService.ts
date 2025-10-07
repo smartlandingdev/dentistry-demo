@@ -7,15 +7,17 @@ export interface AppointmentWithClient {
   hora_inicio: string;
   hora_fim: string;
   finalizado: boolean;
+  cancelado: boolean;
 }
 
 export class AppointmentService {
   async getAllAppointments(): Promise<AppointmentWithClient[]> {
     try {
-      // 1. Busca todos os agendamentos
+      // 1. Busca todos os agendamentos (excluindo cancelados)
       const { data: appointmentsData, error: appointmentsError } = await supabase
         .from("agendamentos")
-        .select("id_agendamento, hora_inicio, hora_fim, id_cliente, finalizado")
+        .select("id_agendamento, hora_inicio, hora_fim, id_cliente, finalizado, cancelado")
+        .eq("cancelado", false)
         .order("hora_inicio", { ascending: true });
 
       if (appointmentsError) {
@@ -61,11 +63,12 @@ export class AppointmentService {
     try {
       const now = new Date().toISOString();
 
-      // 1. Busca próximos agendamentos (não finalizados e futuros)
+      // 1. Busca próximos agendamentos (não finalizados, não cancelados e futuros)
       const { data: appointmentsData, error: appointmentsError } = await supabase
         .from("agendamentos")
-        .select("id_agendamento, hora_inicio, hora_fim, id_cliente, finalizado")
+        .select("id_agendamento, hora_inicio, hora_fim, id_cliente, finalizado, cancelado")
         .eq("finalizado", false)
+        .eq("cancelado", false)
         .gte("hora_inicio", now)
         .order("hora_inicio", { ascending: true })
         .limit(limit);
@@ -105,6 +108,7 @@ export class AppointmentService {
           hora_inicio: apt.hora_inicio,
           hora_fim: apt.hora_fim,
           finalizado: apt.finalizado,
+          cancelado: apt.cancelado,
         })) || [];
 
       return appointments;
