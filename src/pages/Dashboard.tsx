@@ -11,7 +11,7 @@ import { useLanguage } from "../contexts/LanguageContext";
 import { useAppointment } from "../contexts/AppointmentContext";
 import AppointmentModal from "../components/AppointmentModal";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
 
 interface Appointment {
   id_agendamento: string;

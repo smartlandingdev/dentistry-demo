@@ -9,7 +9,7 @@ import { useAppointment } from '../contexts/AppointmentContext';
 import EventModal from './EventModal';
 import styles from './Calendar.module.css';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
 
 interface SupabaseAppointment {
   id_agendamento: string;
