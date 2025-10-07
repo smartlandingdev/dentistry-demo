@@ -13,7 +13,9 @@ const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
 
 // Middleware
 app.use(cors({
-  origin: FRONTEND_URL,
+  origin: process.env.NODE_ENV === 'production'
+    ? [FRONTEND_URL, 'https://your-app.vercel.app'] // Replace with your actual Vercel URL
+    : FRONTEND_URL,
   credentials: true,
 }));
 app.use(express.json());
