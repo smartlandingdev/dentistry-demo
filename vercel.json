@@ -7,7 +7,8 @@
     { "source": "/api/calcom/bookings", "destination": "/api/calcom/bookings" },
     { "source": "/api/calcom/bookings/upcoming", "destination": "/api/calcom/bookings/upcoming" },
     { "source": "/api/calcom/bookings/:id", "destination": "/api/calcom/bookings/[id]" },
-    { "source": "/api/calcom/events", "destination": "/api/calcom/events" }
+    { "source": "/api/calcom/events", "destination": "/api/calcom/events" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [
     {
