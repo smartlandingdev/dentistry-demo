@@ -1,117 +1,78 @@
 import { supabase } from "../config/supabase.js";
-
-export interface AppointmentWithClient {
-  id_agendamento: string;
-  id_cliente: number;
-  clientName: string;
-  hora_inicio: string;
-  hora_fim: string;
-  finalizado: boolean;
-  cancelado: boolean;
-}
+import type { Appointment } from "../types/index.js";
 
 export class AppointmentService {
-  async getAllAppointments(): Promise<AppointmentWithClient[]> {
+  /**
+   * Retorna todos os agendamentos da tabela "agendamentos"
+   */
+  async getAllAppointments(): Promise<Appointment[]> {
     try {
-      // 1. Busca todos os agendamentos (excluindo cancelados)
-      const { data: appointmentsData, error: appointmentsError } = await supabase
+      const { data, error } = await supabase
         .from("agendamentos")
-        .select("id_agendamento, hora_inicio, hora_fim, id_cliente, finalizado, cancelado")
-        .eq("cancelado", false)
-        .order("hora_inicio", { ascending: true });
-
-      if (appointmentsError) {
-        throw new Error(
-          `Erro ao buscar agendamentos: ${appointmentsError.message}`
+        .select(
+          "id_agendamento, hora_inicio, hora_fim, id_cliente, finalizado"
         );
+
+      if (error) {
+        console.error("Erro ao buscar agendamentos:", error.message);
+        throw new Error(`Erro ao buscar agendamentos: ${error.message}`);
       }
 
-      // 2. Busca todos os clientes
-      const { data: clientsData, error: clientsError } = await supabase
-        .from("dados_cliente")
-        .select("id, nomewpp");
-
-      if (clientsError) {
-        throw new Error(`Erro ao buscar clientes: ${clientsError.message}`);
-      }
-
-      // 3. Cria um mapa de clientes para lookup rápido
-      const clientsMap = new Map(
-        clientsData?.map((c: any) => [c.id, c.nomewpp]) || []
-      );
-
-      // 4. Combina agendamentos com nomes dos clientes
-      const appointments: AppointmentWithClient[] =
-        appointmentsData?.map((apt: any) => ({
-          id_agendamento: apt.id_agendamento,
-          id_cliente: apt.id_cliente,
-          clientName: clientsMap.get(apt.id_cliente) || `Cliente #${apt.id_cliente}`,
-          hora_inicio: apt.hora_inicio,
-          hora_fim: apt.hora_fim,
-          finalizado: apt.finalizado,
-        })) || [];
-
-      return appointments;
+      return data || [];
     } catch (error) {
       throw error;
     }
   }
 
-  async getUpcomingAppointments(
-    limit: number = 10
-  ): Promise<AppointmentWithClient[]> {
+  /**
+   * Retorna apenas agendamentos futuros (não finalizados)
+   */
+  async getUpcomingAppointments(limit: number): Promise<Appointment[]> {
     try {
       const now = new Date().toISOString();
 
-      // 1. Busca próximos agendamentos (não finalizados, não cancelados e futuros)
-      const { data: appointmentsData, error: appointmentsError } = await supabase
+      const { data, error } = await supabase
         .from("agendamentos")
-        .select("id_agendamento, hora_inicio, hora_fim, id_cliente, finalizado, cancelado")
-        .eq("finalizado", false)
-        .eq("cancelado", false)
+        .select("id_agendamento, hora_inicio, hora_fim, id_cliente, finalizado")
         .gte("hora_inicio", now)
-        .order("hora_inicio", { ascending: true })
-        .limit(limit);
+        .eq("finalizado", false)
+        .order("hora_inicio", { ascending: true });
 
-      if (appointmentsError) {
+      if (error) {
+        console.error("Erro ao buscar próximos agendamentos:", error.message);
         throw new Error(
-          `Erro ao buscar próximos agendamentos: ${appointmentsError.message}`
+          `Erro ao buscar próximos agendamentos: ${error.message}`
         );
       }
 
-      if (!appointmentsData || appointmentsData.length === 0) {
-        return [];
+      return data || [];
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  /**
+   * Retorna todos os agendamentos de um cliente específico
+   */
+  async getAppointmentsByClientId(clientId: string): Promise<Appointment[]> {
+    try {
+      const { data, error } = await supabase
+        .from("agendamentos")
+        .select("id_agendamento, hora_inicio, hora_fim, id_cliente, finalizado")
+        .eq("id_cliente", clientId)
+        .order("hora_inicio", { ascending: true });
+
+      if (error) {
+        console.error(
+          `Erro ao buscar agendamentos do cliente ${clientId}:`,
+          error.message
+        );
+        throw new Error(
+          `Erro ao buscar agendamentos do cliente ${clientId}: ${error.message}`
+        );
       }
 
-      // 2. Busca clientes apenas dos IDs necessários
-      const clientIds = [...new Set(appointmentsData.map((a: any) => a.id_cliente))];
-      const { data: clientsData, error: clientsError } = await supabase
-        .from("dados_cliente")
-        .select("id, nomewpp")
-        .in("id", clientIds);
-
-      if (clientsError) {
-        throw new Error(`Erro ao buscar clientes: ${clientsError.message}`);
-      }
-
-      // 3. Cria um mapa de clientes para lookup rápido
-      const clientsMap = new Map(
-        clientsData?.map((c: any) => [c.id, c.nomewpp]) || []
-      );
-
-      // 4. Combina agendamentos com nomes dos clientes
-      const appointments: AppointmentWithClient[] =
-        appointmentsData?.map((apt: any) => ({
-          id_agendamento: apt.id_agendamento,
-          id_cliente: apt.id_cliente,
-          clientName: clientsMap.get(apt.id_cliente) || `Cliente #${apt.id_cliente}`,
-          hora_inicio: apt.hora_inicio,
-          hora_fim: apt.hora_fim,
-          finalizado: apt.finalizado,
-          cancelado: apt.cancelado,
-        })) || [];
-
-      return appointments;
+      return data || [];
     } catch (error) {
       throw error;
     }

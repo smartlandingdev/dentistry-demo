@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import { LayoutDashboard, Calendar, Users, Settings, Menu, X, ChevronLeft } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -31,55 +32,77 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggleCollapse }) => {
 
   return (
     <>
-      <button
-        className="md:hidden fixed top-4 left-4 z-50 p-2 text-[#1C1C1C] hover:text-[#A8A29E] bg-[#F2EFEA] border border-[#1C1C1C]/20"
+      <motion.button
+        className="md:hidden fixed top-4 left-4 z-50 p-3 text-gray-700 bg-white rounded-xl border border-gray-200 shadow-lg"
         onClick={toggleMobileMenu}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.95 }}
       >
-        {isMobileMenuOpen ? <X className="w-5 h-5" strokeWidth={1.5} /> : <Menu className="w-5 h-5" strokeWidth={1.5} />}
-      </button>
+        {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+      </motion.button>
 
-      <div className={`fixed inset-y-0 left-0 z-40 bg-[#E8E4DF] border-r border-[#1C1C1C]/20 transform transition-all duration-300 ease-in-out ${
-        isDesktopCollapsed ? 'w-16' : 'w-64'
-      } ${
-        isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
-      } md:translate-x-0`}>
+      <motion.div
+        className={`fixed inset-y-0 left-0 z-40 bg-white border-r border-gray-100 shadow-xl transition-all duration-300 ease-in-out ${
+          isDesktopCollapsed ? 'w-20' : 'w-64'
+        } ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0`}
+        initial={{ x: -300 }}
+        animate={{ x: 0 }}
+      >
         <div className="flex flex-col h-full">
           <div className="flex-1 px-4 py-6">
             <div className="mt-16 md:mt-8">
               <div className="hidden md:flex justify-between items-center mb-8 px-4">
                 {!isDesktopCollapsed && (
-                  <h2 className="text-xl font-semibold text-[#1C1C1C]">SmileCare</h2>
+                  <h2 className="text-xl font-bold bg-gradient-to-r from-[#1A365D] to-[#3B82F6] bg-clip-text text-transparent">
+                    SmileCare
+                  </h2>
                 )}
-                <button
+                <motion.button
                   onClick={toggleDesktopSidebar}
-                  className="p-1.5 text-[#A8A29E] hover:text-[#1C1C1C] transition-colors"
+                  className="p-2 text-gray-400 hover:text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
                   title={isDesktopCollapsed ? t.sidebar.expandSidebar : t.sidebar.collapseSidebar}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  <ChevronLeft className={`w-4 h-4 transition-transform duration-200 ${isDesktopCollapsed ? 'rotate-180' : ''}`} strokeWidth={1.5} />
-                </button>
+                  <ChevronLeft
+                    className={`w-4 h-4 transition-transform duration-200 ${
+                      isDesktopCollapsed ? 'rotate-180' : ''
+                    }`}
+                  />
+                </motion.button>
               </div>
 
               <nav className="space-y-2">
-                {navigationItems.map((item) => {
+                {navigationItems.map((item, index) => {
                   const Icon = item.icon;
                   return (
                     <NavLink
                       key={item.name}
                       to={item.href}
                       className={({ isActive }) =>
-                        `flex items-center px-4 py-3 text-sm font-medium transition-colors duration-200 ${
+                        `flex items-center px-4 py-3.5 text-sm font-medium rounded-xl transition-all duration-200 ${
                           isActive
-                            ? 'bg-[#1C1C1C] text-[#F2EFEA]'
-                            : 'text-[#1C1C1C] hover:bg-[#D6CBB8]'
+                            ? 'bg-gradient-to-r from-[#1A365D] to-[#3B82F6] text-white shadow-lg'
+                            : 'text-gray-700 hover:bg-gray-50'
                         }`
                       }
                       onClick={() => setIsMobileMenuOpen(false)}
                       title={isDesktopCollapsed ? item.name : ''}
                     >
-                      <Icon className="w-5 h-5 mr-3 flex-shrink-0" strokeWidth={1.5} />
-                      <span className={`${isDesktopCollapsed ? 'hidden' : 'block'}`}>
-                        {item.name}
-                      </span>
+                      {({ isActive }) => (
+                        <motion.div
+                          className="flex items-center w-full"
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: index * 0.05 }}
+                          whileHover={{ x: isActive ? 0 : 4 }}
+                        >
+                          <Icon className="w-5 h-5 mr-3 flex-shrink-0" />
+                          <span className={`${isDesktopCollapsed ? 'hidden' : 'block'}`}>
+                            {item.name}
+                          </span>
+                        </motion.div>
+                      )}
                     </NavLink>
                   );
                 })}
@@ -87,20 +110,27 @@ const Sidebar: React.FC<SidebarProps> = ({ onToggleCollapse }) => {
             </div>
           </div>
 
-          <div className={`border-t border-[#1C1C1C]/20 p-4 ${isDesktopCollapsed ? 'text-center' : ''}`}>
-            <div className={`text-xs text-[#A8A29E] ${isDesktopCollapsed ? 'hidden' : 'text-center'}`}>
+          <div
+            className={`border-t border-gray-100 p-4 ${isDesktopCollapsed ? 'text-center' : ''}`}
+          >
+            <div className={`text-xs text-gray-400 ${isDesktopCollapsed ? 'hidden' : 'text-center'}`}>
               {t.sidebar.version}
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
-      {isMobileMenuOpen && (
-        <div
-          className="fixed inset-0 z-30 bg-[#1C1C1C] bg-opacity-50 md:hidden"
-          onClick={toggleMobileMenu}
-        />
-      )}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            className="fixed inset-0 z-30 bg-gray-900/50 backdrop-blur-sm md:hidden"
+            onClick={toggleMobileMenu}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          />
+        )}
+      </AnimatePresence>
     </>
   );
 };

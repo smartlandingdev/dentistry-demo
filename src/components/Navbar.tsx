@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, Bell, Search, User, Globe, ChevronDown } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useAppointment } from '../contexts/AppointmentContext';
@@ -22,84 +23,111 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="bg-[#F2EFEA] border-b border-[#1C1C1C]/20 px-6 py-4 sticky top-0 z-40">
+    <motion.header
+      className="bg-white/80 backdrop-blur-xl border-b border-gray-100 px-6 py-4 sticky top-0 z-40 shadow-sm"
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.3 }}
+    >
       <div className="max-w-full mx-auto">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-6">
             <div className="flex items-center">
-              <div className="w-10 h-10 bg-[#1C1C1C] flex items-center justify-center">
-                <Calendar className="w-6 h-6 text-[#F2EFEA]" strokeWidth={1.5} />
+              <div className="w-12 h-12 bg-gradient-to-br from-[#1A365D] to-[#3B82F6] rounded-xl flex items-center justify-center shadow-md">
+                <Calendar className="w-6 h-6 text-white" />
               </div>
               <div className="ml-4">
-                <h1 className="text-2xl font-bold text-[#1C1C1C]">
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-[#1A365D] to-[#3B82F6] bg-clip-text text-transparent">
                   {t.header.title}
                 </h1>
-                <p className="text-sm text-[#A8A29E]">{t.header.subtitle}</p>
+                <p className="text-sm text-gray-500">{t.header.subtitle}</p>
               </div>
             </div>
           </div>
 
           <div className="flex items-center space-x-4">
-            <div className="hidden md:flex items-center bg-[#E8E4DF] border border-[#1C1C1C]/20 px-3 py-2 min-w-80">
-              <Search className="w-4 h-4 text-[#A8A29E] mr-2" strokeWidth={1.5} />
+            <div className="hidden md:flex items-center bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 min-w-80 focus-within:ring-2 focus-within:ring-[#3B82F6] focus-within:border-transparent transition-all">
+              <Search className="w-4 h-4 text-gray-400 mr-3" />
               <input
                 type="text"
                 placeholder={t.header.searchPlaceholder}
-                className="bg-transparent border-none outline-none text-sm text-[#1C1C1C] placeholder-[#A8A29E] w-full"
+                className="bg-transparent border-none outline-none text-sm text-gray-900 placeholder-gray-400 w-full"
               />
             </div>
 
             <div className="relative">
-              <button
+              <motion.button
                 onClick={() => setShowLanguageDropdown(!showLanguageDropdown)}
-                className="flex items-center space-x-2 px-3 py-2 text-[#1C1C1C] hover:text-[#A8A29E] transition-colors"
+                className="flex items-center space-x-2 px-3 py-2 text-gray-700 hover:text-gray-900 rounded-lg hover:bg-gray-50 transition-colors"
                 title={t.settings.language.current}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                <Globe className="w-4 h-4" strokeWidth={1.5} />
+                <Globe className="w-4 h-4" />
                 <span className="text-sm">{currentLanguage?.flag}</span>
-                <ChevronDown className="w-3 h-3" strokeWidth={1.5} />
-              </button>
+                <ChevronDown className="w-3 h-3" />
+              </motion.button>
 
-              {showLanguageDropdown && (
-                <div className="absolute right-0 mt-2 w-48 bg-[#E8E4DF] border border-[#1C1C1C]/20 py-2 z-50">
-                  {languages.map((lang) => (
-                    <button
-                      key={lang.code}
-                      onClick={() => handleLanguageChange(lang.code)}
-                      className={`w-full text-left px-4 py-2 text-sm hover:bg-[#D6CBB8] flex items-center space-x-3 ${
-                        language === lang.code ? 'bg-[#1C1C1C] text-[#F2EFEA]' : 'text-[#1C1C1C]'
-                      }`}
-                    >
-                      <span className="text-base">{lang.flag}</span>
-                      <span>{lang.name}</span>
-                    </button>
-                  ))}
-                </div>
-              )}
+              <AnimatePresence>
+                {showLanguageDropdown && (
+                  <motion.div
+                    className="absolute right-0 mt-2 w-48 bg-white rounded-xl border border-gray-100 py-2 shadow-xl overflow-hidden"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {languages.map((lang) => (
+                      <motion.button
+                        key={lang.code}
+                        onClick={() => handleLanguageChange(lang.code)}
+                        className={`w-full text-left px-4 py-2.5 text-sm flex items-center space-x-3 transition-colors ${
+                          language === lang.code
+                            ? 'bg-gradient-to-r from-[#1A365D] to-[#3B82F6] text-white'
+                            : 'text-gray-700 hover:bg-gray-50'
+                        }`}
+                        whileHover={{ x: 4 }}
+                      >
+                        <span className="text-base">{lang.flag}</span>
+                        <span>{lang.name}</span>
+                      </motion.button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
-            <button
-              className="relative p-2 text-[#A8A29E] hover:text-[#1C1C1C] transition-colors"
+            <motion.button
+              className="relative p-2.5 text-gray-600 hover:text-gray-900 rounded-lg hover:bg-gray-50 transition-colors"
               title={t.header.notifications}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
             >
-              <Bell className="w-5 h-5" strokeWidth={1.5} />
-              <span className="absolute top-0 right-0 w-2 h-2 bg-[#1C1C1C] rounded-full"></span>
-            </button>
+              <Bell className="w-5 h-5" />
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-gradient-to-r from-[#1A365D] to-[#3B82F6] rounded-full"></span>
+            </motion.button>
 
-            <button
+            <motion.button
               onClick={openModal}
-              className="bg-[#1C1C1C] hover:bg-[#A8A29E] text-[#F2EFEA] px-6 py-2 text-sm font-medium transition-all duration-300"
+              className="bg-gradient-to-r from-[#1A365D] to-[#3B82F6] hover:shadow-lg text-white px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300"
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
             >
               {t.header.newAppointment}
-            </button>
+            </motion.button>
 
-            <div className="w-8 h-8 border border-[#1C1C1C]/20 flex items-center justify-center cursor-pointer hover:bg-[#E8E4DF] transition-colors" title={t.header.profile}>
-              <User className="w-4 h-4 text-[#1C1C1C]" strokeWidth={1.5} />
-            </div>
+            <motion.div
+              className="w-10 h-10 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl flex items-center justify-center cursor-pointer hover:shadow-md transition-all"
+              title={t.header.profile}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <User className="w-5 h-5 text-gray-700" />
+            </motion.div>
           </div>
         </div>
       </div>
-    </header>
+    </motion.header>
   );
 };
 
