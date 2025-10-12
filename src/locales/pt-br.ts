@@ -11,9 +11,9 @@ export const ptBR = {
     success: 'Sucesso',
   },
   header: {
-    title: 'App Agendador',
-    subtitle: 'Gerencie seus compromissos',
-    searchPlaceholder: 'Pesquisar compromissos...',
+    title: 'SmileCare',
+    subtitle: 'Sistema de Gestão Odontológica',
+    searchPlaceholder: 'Pesquisar pacientes e agendamentos...',
     newAppointment: 'Novo Agendamento',
     notifications: 'Notificações',
     profile: 'Perfil',
@@ -22,12 +22,12 @@ export const ptBR = {
     dashboard: 'Painel',
     calendar: 'Calendário',
     settings: 'Configurações',
-    version: 'App Agendador v1.0',
+    version: 'SmileCare v1.0',
     expandSidebar: 'Expandir barra lateral',
     collapseSidebar: 'Recolher barra lateral',
   },
   footer: {
-    copyright: '© 2025 App Agendador. Todos os direitos reservados.',
+    copyright: '© 2025 SmileCare. Todos os direitos reservados.',
   },
   dashboard: {
     title: 'Painel',

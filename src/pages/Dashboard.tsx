@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import {
   Calendar as CalendarIcon,
   Users,
@@ -32,11 +33,8 @@ const Dashboard: React.FC = () => {
   const { isModalOpen, openModal, closeModal } = useAppointment();
 
   const [appointments, setAppointments] = useState<Appointment[]>([]);
-  const [upcomingAppointments, setUpcomingAppointments] = useState<
-    Appointment[]
-  >([]);
+  const [upcomingAppointments, setUpcomingAppointments] = useState<Appointment[]>([]);
 
-  // Buscar agendamentos da API
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
@@ -75,7 +73,6 @@ const Dashboard: React.FC = () => {
     };
 
     fetchAppointments();
-
     const interval = setInterval(fetchAppointments, 60000);
     return () => clearInterval(interval);
   }, [t.eventModal.services.consultation]);
@@ -87,21 +84,23 @@ const Dashboard: React.FC = () => {
       change: "+12%",
       changeType: "increase",
       icon: CalendarIcon,
+      color: "from-blue-500 to-blue-600",
     },
     {
       name: t.dashboard.stats.activeClients,
-      value: [
-        ...new Set(appointments.map((a) => a.clientName || a.id_cliente)),
-      ].length.toString(),
+      value: [...new Set(appointments.map((a) => a.clientName || a.id_cliente))].length.toString(),
       change: "+5%",
       changeType: "increase",
       icon: Users,
+      color: "from-purple-500 to-purple-600",
     },
     {
       name: t.dashboard.stats.hoursScheduled,
       value: appointments.length.toString(),
+      change: "+8%",
       changeType: "increase",
       icon: Clock,
+      color: "from-green-500 to-green-600",
     },
     {
       name: t.dashboard.stats.revenue,
@@ -109,6 +108,7 @@ const Dashboard: React.FC = () => {
       change: "+15%",
       changeType: "increase",
       icon: TrendingUp,
+      color: "from-orange-500 to-orange-600",
     },
   ];
 
@@ -117,89 +117,89 @@ const Dashboard: React.FC = () => {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6 bg-gradient-to-br from-gray-50 to-white min-h-screen">
       {/* Cabeçalho */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-[#1C1C1C]">
+      <motion.div
+        className="mb-8"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <h1 className="text-4xl font-bold bg-gradient-to-r from-[#1A365D] to-[#3B82F6] bg-clip-text text-transparent">
           {t.dashboard.title}
         </h1>
-        <p className="text-[#A8A29E] mt-2">{t.dashboard.subtitle}</p>
-      </div>
+        <p className="text-gray-600 mt-2 text-lg">{t.dashboard.subtitle}</p>
+      </motion.div>
 
       {/* Estatísticas */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {stats.map((stat) => {
+        {stats.map((stat, index) => {
           const Icon = stat.icon;
           return (
-            <div
+            <motion.div
               key={stat.name}
-              className="bg-[#E8E4DF] border border-[#1C1C1C]/20 p-6"
+              className="bg-white rounded-3xl p-6 border border-gray-100 hover:shadow-2xl transition-all duration-300 hover-lift"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              whileHover={{ y: -8 }}
             >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-[#A8A29E]">
-                    {stat.name}
-                  </p>
-                  <p className="text-3xl font-bold text-[#1C1C1C] mt-2">
-                    {stat.value}
-                  </p>
+              <div className="flex items-center justify-between mb-4">
+                <div className={`w-14 h-14 bg-gradient-to-br ${stat.color} rounded-2xl flex items-center justify-center shadow-lg`}>
+                  <Icon className="w-7 h-7 text-white" />
                 </div>
-                <div className="w-12 h-12 bg-[#1C1C1C] flex items-center justify-center">
-                  <Icon className="w-6 h-6 text-[#F2EFEA]" strokeWidth={1.5} />
-                </div>
-              </div>
-              <div className="mt-4 flex items-center">
-                <span className="text-sm font-medium text-[#1C1C1C]">
+                <span className="text-sm font-semibold text-green-600 bg-green-50 px-3 py-1 rounded-full">
                   {stat.change}
                 </span>
-                <span className="text-sm text-[#A8A29E] ml-2">
-                  {t.dashboard.stats.fromLastMonth}
-                </span>
               </div>
-            </div>
+              <p className="text-sm font-medium text-gray-500 mb-1">{stat.name}</p>
+              <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
+              <p className="text-xs text-gray-400 mt-2">{t.dashboard.stats.fromLastMonth}</p>
+            </motion.div>
           );
         })}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Próximos agendamentos */}
-        <div className="bg-[#E8E4DF] border border-[#1C1C1C]/20 p-6">
-          <h2 className="text-xl font-semibold text-[#1C1C1C] mb-6">
+        <motion.div
+          className="bg-white rounded-3xl p-8 border border-gray-100 shadow-lg"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+            <div className="w-2 h-8 bg-gradient-to-b from-[#1A365D] to-[#3B82F6] rounded-full"></div>
             {t.dashboard.upcomingAppointments.title}
           </h2>
           <div className="space-y-4">
             {upcomingAppointments.length > 0 ? (
-              upcomingAppointments.map((appointment) => (
-                <div
+              upcomingAppointments.map((appointment, index) => (
+                <motion.div
                   key={appointment.id_agendamento}
-                  className="flex items-center justify-between p-4 bg-[#F2EFEA] border border-[#1C1C1C]/20"
+                  className="flex items-center justify-between p-5 bg-gradient-to-br from-gray-50 to-white rounded-2xl border border-gray-100 hover:shadow-lg transition-all duration-300"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  whileHover={{ x: 4 }}
                 >
                   <div className="flex items-center space-x-4">
-                    <div className="w-10 h-10 bg-[#1C1C1C] flex items-center justify-center">
-                      <CalendarIcon
-                        className="w-5 h-5 text-[#F2EFEA]"
-                        strokeWidth={1.5}
-                      />
+                    <div className="w-12 h-12 bg-gradient-to-br from-[#1A365D] to-[#3B82F6] rounded-xl flex items-center justify-center shadow-md">
+                      <CalendarIcon className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <h3 className="font-medium text-[#1C1C1C]">
-                        {appointment.clientName}
-                      </h3>
-                      <p className="text-sm text-[#A8A29E]">
-                        {appointment.service}
-                      </p>
+                      <h3 className="font-semibold text-gray-900">{appointment.clientName}</h3>
+                      <p className="text-sm text-gray-500">{appointment.service}</p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-medium text-[#1C1C1C]">
-                      {appointment.time}
-                    </p>
-                    <p className="text-sm text-[#A8A29E]">{appointment.date}</p>
+                    <p className="text-sm font-semibold text-gray-900">{appointment.time}</p>
+                    <p className="text-sm text-gray-500 mb-2">{appointment.date}</p>
                     <span
-                      className={`inline-flex items-center px-2.5 py-0.5 text-xs font-medium mt-1 ${
+                      className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${
                         appointment.status === "confirmed"
-                          ? "bg-[#1C1C1C] text-[#F2EFEA]"
-                          : "bg-[#D6CBB8] text-[#1C1C1C]"
+                          ? "bg-gradient-to-r from-green-500 to-green-600 text-white"
+                          : "bg-gradient-to-r from-yellow-400 to-yellow-500 text-white"
                       }`}
                     >
                       {appointment.status === "confirmed"
@@ -207,43 +207,59 @@ const Dashboard: React.FC = () => {
                         : t.dashboard.upcomingAppointments.pending}
                     </span>
                   </div>
-                </div>
+                </motion.div>
               ))
             ) : (
-              <p className="text-[#1C1C1C]">Nenhum próximo agendamento</p>
+              <p className="text-gray-500 text-center py-8">Nenhum próximo agendamento</p>
             )}
           </div>
-        </div>
+        </motion.div>
 
         {/* Ações rápidas */}
-        <div className="bg-[#E8E4DF] border border-[#1C1C1C]/20 p-6">
-          <h2 className="text-xl font-semibold text-[#1C1C1C] mb-6">
+        <motion.div
+          className="bg-white rounded-3xl p-8 border border-gray-100 shadow-lg"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+            <div className="w-2 h-8 bg-gradient-to-b from-[#1A365D] to-[#3B82F6] rounded-full"></div>
             {t.dashboard.quickActions.title}
           </h2>
           <div className="space-y-4">
-            <button
+            <motion.button
               onClick={openModal}
-              className="w-full bg-[#1C1C1C] hover:bg-[#A8A29E] text-[#F2EFEA] p-4 font-medium transition-all duration-200"
+              className="w-full bg-gradient-to-r from-[#1A365D] to-[#3B82F6] hover:shadow-xl text-white p-5 font-semibold rounded-2xl transition-all duration-300 flex items-center justify-center gap-3"
+              whileHover={{ scale: 1.02, y: -2 }}
+              whileTap={{ scale: 0.98 }}
             >
+              <CalendarIcon className="w-5 h-5" />
               {t.dashboard.quickActions.scheduleNew}
-            </button>
-            <button
+            </motion.button>
+
+            <motion.button
               onClick={() => navigate("/sistema/calendar")}
-              className="w-full bg-[#F2EFEA] hover:bg-[#D6CBB8] text-[#1C1C1C] p-4 font-medium transition-colors border border-[#1C1C1C]/20"
+              className="w-full bg-white hover:bg-gray-50 text-gray-700 p-5 font-semibold rounded-2xl transition-all border-2 border-gray-200 hover:border-[#3B82F6] flex items-center justify-center gap-3"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
             >
+              <CalendarIcon className="w-5 h-5" />
               {t.dashboard.quickActions.viewCalendar}
-            </button>
-            <button
+            </motion.button>
+
+            <motion.button
               onClick={() => navigate("/sistema/clients")}
-              className="w-full bg-[#F2EFEA] hover:bg-[#D6CBB8] text-[#1C1C1C] p-4 font-medium transition-colors border border-[#1C1C1C]/20"
+              className="w-full bg-white hover:bg-gray-50 text-gray-700 p-5 font-semibold rounded-2xl transition-all border-2 border-gray-200 hover:border-[#3B82F6] flex items-center justify-center gap-3"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
             >
+              <Users className="w-5 h-5" />
               {t.dashboard.quickActions.manageClients}
-            </button>
+            </motion.button>
           </div>
-        </div>
+        </motion.div>
       </div>
 
-      {/* Modal de Agendamento */}
       <AppointmentModal
         isOpen={isModalOpen}
         onClose={closeModal}

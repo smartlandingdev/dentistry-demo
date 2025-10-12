@@ -137,8 +137,8 @@ const Calendar: React.FC<CalendarProps> = () => {
       customerName: eventData.customerName,
       service: eventData.service,
       notes: eventData.notes,
-      backgroundColor: '#1C1C1C',
-      borderColor: '#1C1C1C',
+      backgroundColor: '#1A365D',
+      borderColor: '#3B82F6',
       source: 'local',
     };
 
@@ -170,8 +170,8 @@ const Calendar: React.FC<CalendarProps> = () => {
     title: apt.clientName,
     start: apt.hora_inicio,
     end: apt.hora_fim,
-    backgroundColor: apt.finalizado ? '#059669' : '#1C1C1C',
-    borderColor: apt.finalizado ? '#047857' : '#0C0C0C',
+    backgroundColor: apt.finalizado ? '#10b981' : '#1A365D',
+    borderColor: apt.finalizado ? '#059669' : '#3B82F6',
     extendedProps: {
       appointmentId: apt.id_agendamento,
       clientId: apt.id_cliente,
@@ -182,12 +182,12 @@ const Calendar: React.FC<CalendarProps> = () => {
   }));
 
   return (
-    <div className={`bg-[#E8E4DF] border border-[#1C1C1C]/20 p-3 md:p-6 overflow-hidden ${styles['calendar-container']}`}>
+    <div className={`bg-white rounded-3xl border border-gray-100 shadow-lg p-6 overflow-hidden ${styles['calendar-container']}`}>
       {/* Appointments Status */}
-      <div className="mb-4 p-3 bg-white/50 border border-[#1C1C1C]/10 flex items-center justify-between gap-2 flex-wrap">
-        <div className="flex items-center gap-2 flex-1 min-w-[200px]">
+      <div className="mb-6 p-4 bg-gradient-to-r from-gray-50 to-white rounded-2xl border border-gray-200 flex items-center justify-between gap-2 flex-wrap">
+        <div className="flex items-center gap-3 flex-1 min-w-[200px]">
           <div
-            className={`w-2 h-2 rounded-full ${
+            className={`w-3 h-3 rounded-full ${
               loading
                 ? 'bg-yellow-500 animate-pulse'
                 : error
@@ -195,7 +195,7 @@ const Calendar: React.FC<CalendarProps> = () => {
                 : 'bg-green-500'
             }`}
           />
-          <span className="text-xs md:text-sm text-[#1C1C1C]">
+          <span className="text-sm font-semibold text-gray-900">
             {loading
               ? 'Carregando agendamentos...'
               : error
@@ -207,7 +207,7 @@ const Calendar: React.FC<CalendarProps> = () => {
 
       {/* Error Message */}
       {error && (
-        <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 text-sm">
+        <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-2xl text-sm font-medium">
           {error}
         </div>
       )}
@@ -319,12 +319,12 @@ const Calendar: React.FC<CalendarProps> = () => {
       {selectedEvent && isModalOpen && (
         <button
           onClick={handleDeleteEvent}
-          className={`fixed bg-[#1C1C1C] hover:bg-[#A8A29E] text-[#F2EFEA] shadow-lg transition-colors z-50 ${
+          className={`fixed bg-gradient-to-r from-red-500 to-red-600 hover:shadow-2xl text-white rounded-2xl shadow-lg transition-all duration-300 z-50 ${
             isMobile
               ? 'bottom-20 right-4 p-3'
-              : 'bottom-4 right-4 p-3'
+              : 'bottom-4 right-4 p-4'
           }`}
-          title="Delete Appointment"
+          title="Excluir Agendamento"
         >
           <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />

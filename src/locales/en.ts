@@ -11,9 +11,9 @@ export const en = {
     success: 'Success',
   },
   header: {
-    title: 'Scheduler App',
-    subtitle: 'Manage your appointments',
-    searchPlaceholder: 'Search appointments...',
+    title: 'SmileCare',
+    subtitle: 'Dental Management System',
+    searchPlaceholder: 'Search patients and appointments...',
     newAppointment: 'New Appointment',
     notifications: 'Notifications',
     profile: 'Profile',
@@ -22,12 +22,12 @@ export const en = {
     dashboard: 'Dashboard',
     calendar: 'Calendar',
     settings: 'Settings',
-    version: 'Scheduler App v1.0',
+    version: 'SmileCare v1.0',
     expandSidebar: 'Expand sidebar',
     collapseSidebar: 'Collapse sidebar',
   },
   footer: {
-    copyright: '© 2025 Scheduler App. All rights reserved.',
+    copyright: '© 2025 SmileCare. All rights reserved.',
   },
   dashboard: {
     title: 'Dashboard',
