@@ -93,6 +93,23 @@ export default function LandingPage() {
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-gradient-to-br from-white via-gray-50/30 to-white">
+        {/* Background Image - Super Transparent */}
+        <motion.div
+          className="absolute inset-0 overflow-hidden pointer-events-none"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 2, delay: 1.5 }}
+        >
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{
+              backgroundImage: 'url(https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=1920&q=80)',
+              opacity: 0.08,
+              mixBlendMode: 'multiply'
+            }}
+          />
+        </motion.div>
+
         {/* Animated Background Blobs */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <motion.div
