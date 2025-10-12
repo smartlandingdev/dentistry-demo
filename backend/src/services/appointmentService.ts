@@ -19,6 +19,24 @@ export class AppointmentService {
       }
 
       return data || [];
+      // 3. Cria um mapa de clientes para lookup rápido
+      const clientsMap = new Map(
+        clientsData?.map((c: any) => [c.id, c.nomewpp]) || []
+      );
+
+      // 4. Combina agendamentos com nomes dos clientes
+      const appointments: AppointmentWithClient[] =
+        appointmentsData?.map((apt: any) => ({
+          id_agendamento: apt.id_agendamento,
+          id_cliente: apt.id_cliente,
+          clientName: clientsMap.get(apt.id_cliente) || `Cliente #${apt.id_cliente}`,
+          hora_inicio: apt.hora_inicio,
+          hora_fim: apt.hora_fim,
+          finalizado: apt.finalizado,
+          cancelado: apt.cancelado,
+        })) || [];
+
+      return appointments;
     } catch (error) {
       throw error;
     }
