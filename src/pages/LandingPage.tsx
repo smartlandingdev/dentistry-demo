@@ -123,12 +123,12 @@ export default function LandingPage() {
             }}
           />
 
-          {/* Additional gradient circles */}
+          {/* Additional gradient circles - more visible */}
           <motion.div
-            className="absolute top-1/3 right-1/4 w-64 h-64 bg-gradient-to-br from-blue-200/40 to-indigo-200/40 rounded-full filter blur-2xl"
+            className="absolute top-1/4 right-1/4 w-[600px] h-[600px] bg-gradient-to-br from-blue-300/70 to-indigo-400/60 rounded-full filter blur-3xl"
             animate={{
               scale: [1, 1.15, 1],
-              opacity: [0.3, 0.5, 0.3],
+              opacity: [0.5, 0.7, 0.5],
             }}
             transition={{
               duration: 6,
@@ -139,10 +139,10 @@ export default function LandingPage() {
           />
 
           <motion.div
-            className="absolute bottom-1/3 left-1/3 w-80 h-80 bg-gradient-to-tr from-indigo-100/30 to-blue-100/30 rounded-full filter blur-3xl"
+            className="absolute bottom-1/4 left-1/4 w-[700px] h-[700px] bg-gradient-to-tr from-indigo-300/60 to-blue-400/70 rounded-full filter blur-3xl"
             animate={{
               scale: [1, 1.1, 1],
-              opacity: [0.2, 0.4, 0.2],
+              opacity: [0.4, 0.6, 0.4],
             }}
             transition={{
               duration: 7,
@@ -153,7 +153,7 @@ export default function LandingPage() {
           />
 
           <motion.div
-            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-blue-50/20 to-indigo-50/20 rounded-full filter blur-3xl"
+            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-blue-200/50 to-indigo-200/60 rounded-full filter blur-3xl"
             animate={{
               scale: [1, 1.2, 1],
               rotate: [0, 180, 360],
@@ -164,146 +164,394 @@ export default function LandingPage() {
               ease: "linear"
             }}
           />
+
+          <motion.div
+            className="absolute top-10 left-1/2 w-[500px] h-[500px] bg-gradient-to-bl from-blue-400/50 to-transparent rounded-full filter blur-2xl"
+            animate={{
+              scale: [1, 1.25, 1],
+              x: [-50, 50, -50],
+            }}
+            transition={{
+              duration: 9,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
         </div>
 
         <div className="max-w-7xl mx-auto px-6 lg:px-12 w-full relative z-10">
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
             {/* Left Content */}
-            <motion.div
-              className="space-y-10"
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-            >
+            <div className="space-y-10">
+              {/* Badge - Primeiro elemento */}
               <motion.div
                 className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 border border-blue-100 rounded-full text-sm text-[#1A365D] font-medium"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
+                initial={{ opacity: 0, y: -50, scale: 0.3, rotateX: -90, filter: "blur(10px)" }}
+                animate={{ opacity: 1, y: 0, scale: 1, rotateX: 0, filter: "blur(0px)" }}
+                transition={{
+                  duration: 1,
+                  delay: 0.2,
+                  ease: [0.34, 1.56, 0.64, 1]
+                }}
               >
-                <Sparkles className="w-4 h-4" />
-                Excelência em Odontologia
+                <motion.div
+                  initial={{ rotate: -180, scale: 0 }}
+                  animate={{ rotate: 0, scale: 1 }}
+                  transition={{
+                    duration: 0.8,
+                    delay: 0.5,
+                    ease: "backOut"
+                  }}
+                >
+                  <Sparkles className="w-4 h-4" />
+                </motion.div>
+                <motion.span
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{
+                    duration: 0.6,
+                    delay: 0.7,
+                    ease: "easeOut"
+                  }}
+                >
+                  Excelência em Odontologia
+                </motion.span>
               </motion.div>
 
+              {/* Título - Segundo elemento */}
               <div className="space-y-6">
-                <motion.h1
-                  className="text-6xl lg:text-7xl font-bold text-gray-900 tracking-tight leading-[1.1]"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 }}
-                >
-                  Seu sorriso{' '}
-                  <span className="bg-gradient-to-r from-[#1A365D] to-[#3B82F6] bg-clip-text text-transparent">
+                <h1 className="text-6xl lg:text-7xl font-bold text-gray-900 tracking-tight leading-[1.1]">
+                  <motion.span
+                    className="inline-block"
+                    initial={{ opacity: 0, x: -100, rotateY: -90, filter: "blur(20px)" }}
+                    animate={{ opacity: 1, x: 0, rotateY: 0, filter: "blur(0px)" }}
+                    transition={{
+                      duration: 1.2,
+                      delay: 0.6,
+                      ease: [0.22, 1, 0.36, 1]
+                    }}
+                  >
+                    Seu
+                  </motion.span>{' '}
+                  <motion.span
+                    className="inline-block"
+                    initial={{ opacity: 0, x: -100, rotateY: -90, filter: "blur(20px)" }}
+                    animate={{ opacity: 1, x: 0, rotateY: 0, filter: "blur(0px)" }}
+                    transition={{
+                      duration: 1.2,
+                      delay: 0.75,
+                      ease: [0.22, 1, 0.36, 1]
+                    }}
+                  >
+                    sorriso
+                  </motion.span>{' '}
+                  <motion.span
+                    className="bg-gradient-to-r from-[#1A365D] to-[#3B82F6] bg-clip-text text-transparent inline-block"
+                    initial={{ opacity: 0, scale: 0.3, rotateZ: -45, y: 50, filter: "blur(15px)" }}
+                    animate={{ opacity: 1, scale: 1, rotateZ: 0, y: 0, filter: "blur(0px)" }}
+                    transition={{
+                      duration: 1.3,
+                      delay: 0.9,
+                      ease: [0.34, 1.56, 0.64, 1]
+                    }}
+                  >
                     perfeito
-                  </span>
+                  </motion.span>
                   <br />
-                  começa aqui
-                </motion.h1>
+                  <motion.span
+                    className="inline-block"
+                    initial={{ opacity: 0, x: -100, rotateY: -90, filter: "blur(20px)" }}
+                    animate={{ opacity: 1, x: 0, rotateY: 0, filter: "blur(0px)" }}
+                    transition={{
+                      duration: 1.2,
+                      delay: 1.3,
+                      ease: [0.22, 1, 0.36, 1]
+                    }}
+                  >
+                    começa
+                  </motion.span>{' '}
+                  <motion.span
+                    className="inline-block"
+                    initial={{ opacity: 0, x: -100, rotateY: -90, filter: "blur(20px)" }}
+                    animate={{ opacity: 1, x: 0, rotateY: 0, filter: "blur(0px)" }}
+                    transition={{
+                      duration: 1.2,
+                      delay: 1.45,
+                      ease: [0.22, 1, 0.36, 1]
+                    }}
+                  >
+                    aqui
+                  </motion.span>
+                </h1>
+
+                {/* Descrição - Terceiro elemento */}
                 <motion.p
                   className="text-xl text-gray-600 leading-relaxed max-w-lg"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 }}
+                  initial={{ opacity: 0, y: 50, scale: 0.9, filter: "blur(10px)" }}
+                  animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+                  transition={{
+                    duration: 1,
+                    delay: 1.7,
+                    ease: [0.22, 1, 0.36, 1]
+                  }}
                 >
                   Tecnologia de ponta e atendimento humanizado para
                   transformar o seu sorriso.
                 </motion.p>
               </div>
 
-              <motion.div
-                className="flex flex-wrap gap-4"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 }}
-              >
+              {/* Botões - Quarto elemento */}
+              <div className="flex flex-wrap gap-4">
                 <motion.button
                   onClick={() => navigate('/sistema')}
                   className="px-8 py-4 bg-gradient-to-r from-[#1A365D] to-[#3B82F6] text-white text-sm font-semibold rounded-xl hover:shadow-xl transition-all duration-300 flex items-center gap-3 group"
+                  initial={{ opacity: 0, x: -80, rotateZ: -10, scale: 0.7, filter: "blur(10px)" }}
+                  animate={{ opacity: 1, x: 0, rotateZ: 0, scale: 1, filter: "blur(0px)" }}
+                  transition={{
+                    duration: 1,
+                    delay: 2,
+                    ease: [0.34, 1.56, 0.64, 1]
+                  }}
                   whileHover={{ scale: 1.05, x: 5 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  Agendar Consulta
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  <motion.span
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 2.3 }}
+                  >
+                    Agendar Consulta
+                  </motion.span>
+                  <motion.div
+                    initial={{ x: -10, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 2.5 }}
+                  >
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </motion.div>
                 </motion.button>
 
                 <motion.button
                   className="px-8 py-4 border-2 border-gray-200 text-gray-700 text-sm font-semibold rounded-xl hover:border-[#3B82F6] hover:text-[#3B82F6] transition-all duration-300"
+                  initial={{ opacity: 0, x: -80, rotateZ: -10, scale: 0.7, filter: "blur(10px)" }}
+                  animate={{ opacity: 1, x: 0, rotateZ: 0, scale: 1, filter: "blur(0px)" }}
+                  transition={{
+                    duration: 1,
+                    delay: 2.2,
+                    ease: [0.34, 1.56, 0.64, 1]
+                  }}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  Saiba Mais
+                  <motion.span
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 2.5 }}
+                  >
+                    Saiba Mais
+                  </motion.span>
                 </motion.button>
-              </motion.div>
+              </div>
 
-              <motion.div
-                className="flex items-center gap-12 pt-8"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.7 }}
-              >
-                <div>
-                  <div className="text-4xl font-bold bg-gradient-to-r from-[#1A365D] to-[#3B82F6] bg-clip-text text-transparent mb-1">
+              {/* Estatísticas - Quinto elemento */}
+              <div className="flex items-center gap-12 pt-8">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0, rotateZ: -180, y: 50 }}
+                  animate={{ opacity: 1, scale: 1, rotateZ: 0, y: 0 }}
+                  transition={{
+                    duration: 1,
+                    delay: 2.6,
+                    ease: [0.68, -0.55, 0.265, 1.55]
+                  }}
+                >
+                  <motion.div
+                    className="text-4xl font-bold bg-gradient-to-r from-[#1A365D] to-[#3B82F6] bg-clip-text text-transparent mb-1"
+                    initial={{ filter: "blur(10px)" }}
+                    animate={{ filter: "blur(0px)" }}
+                    transition={{ duration: 0.5, delay: 2.9 }}
+                  >
                     10+
-                  </div>
-                  <div className="text-xs text-gray-500 uppercase tracking-wider">Anos</div>
-                </div>
-                <div className="h-12 w-px bg-gray-200"></div>
-                <div>
-                  <div className="text-4xl font-bold bg-gradient-to-r from-[#1A365D] to-[#3B82F6] bg-clip-text text-transparent mb-1">
+                  </motion.div>
+                  <motion.div
+                    className="text-xs text-gray-500 uppercase tracking-wider"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: 3 }}
+                  >
+                    Anos
+                  </motion.div>
+                </motion.div>
+
+                <motion.div
+                  className="h-12 w-px bg-gray-200"
+                  initial={{ scaleY: 0, opacity: 0 }}
+                  animate={{ scaleY: 1, opacity: 1 }}
+                  transition={{ duration: 0.6, delay: 3.1, ease: "backOut" }}
+                />
+
+                <motion.div
+                  initial={{ opacity: 0, scale: 0, rotateZ: -180, y: 50 }}
+                  animate={{ opacity: 1, scale: 1, rotateZ: 0, y: 0 }}
+                  transition={{
+                    duration: 1,
+                    delay: 2.8,
+                    ease: [0.68, -0.55, 0.265, 1.55]
+                  }}
+                >
+                  <motion.div
+                    className="text-4xl font-bold bg-gradient-to-r from-[#1A365D] to-[#3B82F6] bg-clip-text text-transparent mb-1"
+                    initial={{ filter: "blur(10px)" }}
+                    animate={{ filter: "blur(0px)" }}
+                    transition={{ duration: 0.5, delay: 3.1 }}
+                  >
                     5000+
-                  </div>
-                  <div className="text-xs text-gray-500 uppercase tracking-wider">Pacientes</div>
-                </div>
-                <div className="h-12 w-px bg-gray-200"></div>
-                <div>
-                  <div className="text-4xl font-bold bg-gradient-to-r from-[#1A365D] to-[#3B82F6] bg-clip-text text-transparent mb-1">
+                  </motion.div>
+                  <motion.div
+                    className="text-xs text-gray-500 uppercase tracking-wider"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: 3.2 }}
+                  >
+                    Pacientes
+                  </motion.div>
+                </motion.div>
+
+                <motion.div
+                  className="h-12 w-px bg-gray-200"
+                  initial={{ scaleY: 0, opacity: 0 }}
+                  animate={{ scaleY: 1, opacity: 1 }}
+                  transition={{ duration: 0.6, delay: 3.3, ease: "backOut" }}
+                />
+
+                <motion.div
+                  initial={{ opacity: 0, scale: 0, rotateZ: -180, y: 50 }}
+                  animate={{ opacity: 1, scale: 1, rotateZ: 0, y: 0 }}
+                  transition={{
+                    duration: 1,
+                    delay: 3,
+                    ease: [0.68, -0.55, 0.265, 1.55]
+                  }}
+                >
+                  <motion.div
+                    className="text-4xl font-bold bg-gradient-to-r from-[#1A365D] to-[#3B82F6] bg-clip-text text-transparent mb-1"
+                    initial={{ filter: "blur(10px)" }}
+                    animate={{ filter: "blur(0px)" }}
+                    transition={{ duration: 0.5, delay: 3.3 }}
+                  >
                     98%
-                  </div>
-                  <div className="text-xs text-gray-500 uppercase tracking-wider">Satisfação</div>
-                </div>
-              </motion.div>
-            </motion.div>
+                  </motion.div>
+                  <motion.div
+                    className="text-xs text-gray-500 uppercase tracking-wider"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: 3.4 }}
+                  >
+                    Satisfação
+                  </motion.div>
+                </motion.div>
+              </div>
+            </div>
 
             {/* Right - 3D Spline */}
             <motion.div
               className="relative h-[600px] lg:h-[700px]"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1, delay: 0.3 }}
+              initial={{ opacity: 0, scale: 0.6, rotateY: 25, x: 100, filter: "blur(20px)" }}
+              animate={{ opacity: 1, scale: 1, rotateY: 0, x: 0, filter: "blur(0px)" }}
+              transition={{
+                duration: 1.5,
+                delay: 1.2,
+                ease: [0.22, 1, 0.36, 1]
+              }}
             >
               <SplineViewer />
 
               {/* Floating Cards */}
               <motion.div
                 className="absolute top-20 -left-4 bg-white/80 backdrop-blur-lg p-6 rounded-3xl shadow-2xl border border-gray-100"
-                animate={{ y: [0, -15, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                initial={{ opacity: 0, x: -100, rotateZ: -20, scale: 0.5 }}
+                animate={{ opacity: 1, x: 0, rotateZ: 0, scale: 1 }}
+                transition={{
+                  duration: 1,
+                  delay: 3.5,
+                  ease: [0.68, -0.55, 0.265, 1.55]
+                }}
               >
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-gradient-to-br from-[#1A365D] to-[#3B82F6] rounded-2xl flex items-center justify-center shadow-lg">
-                    <Shield className="w-8 h-8 text-white" />
+                <motion.div
+                  animate={{ y: [0, -15, 0] }}
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: 4
+                  }}
+                >
+                  <div className="flex items-center gap-4">
+                    <motion.div
+                      className="w-16 h-16 bg-gradient-to-br from-[#1A365D] to-[#3B82F6] rounded-2xl flex items-center justify-center shadow-lg"
+                      initial={{ rotate: -360, scale: 0 }}
+                      animate={{ rotate: 0, scale: 1 }}
+                      transition={{
+                        duration: 0.8,
+                        delay: 3.7,
+                        ease: [0.68, -0.55, 0.265, 1.55]
+                      }}
+                    >
+                      <Shield className="w-8 h-8 text-white" />
+                    </motion.div>
+                    <motion.div
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.5, delay: 3.9 }}
+                    >
+                      <div className="text-base font-bold text-gray-900">100% Seguro</div>
+                      <div className="text-sm text-gray-500">Protocolos certificados</div>
+                    </motion.div>
                   </div>
-                  <div>
-                    <div className="text-base font-bold text-gray-900">100% Seguro</div>
-                    <div className="text-sm text-gray-500">Protocolos certificados</div>
-                  </div>
-                </div>
+                </motion.div>
               </motion.div>
 
               <motion.div
                 className="absolute bottom-32 -right-4 bg-white/80 backdrop-blur-lg p-6 rounded-3xl shadow-2xl border border-gray-100"
-                animate={{ y: [0, 15, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+                initial={{ opacity: 0, x: 100, rotateZ: 20, scale: 0.5 }}
+                animate={{ opacity: 1, x: 0, rotateZ: 0, scale: 1 }}
+                transition={{
+                  duration: 1,
+                  delay: 3.8,
+                  ease: [0.68, -0.55, 0.265, 1.55]
+                }}
               >
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-gradient-to-br from-[#1A365D] to-[#3B82F6] rounded-2xl flex items-center justify-center shadow-lg">
-                    <Award className="w-8 h-8 text-white" />
+                <motion.div
+                  animate={{ y: [0, 15, 0] }}
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: 4.3
+                  }}
+                >
+                  <div className="flex items-center gap-4">
+                    <motion.div
+                      className="w-16 h-16 bg-gradient-to-br from-[#1A365D] to-[#3B82F6] rounded-2xl flex items-center justify-center shadow-lg"
+                      initial={{ rotate: 360, scale: 0 }}
+                      animate={{ rotate: 0, scale: 1 }}
+                      transition={{
+                        duration: 0.8,
+                        delay: 4,
+                        ease: [0.68, -0.55, 0.265, 1.55]
+                      }}
+                    >
+                      <Award className="w-8 h-8 text-white" />
+                    </motion.div>
+                    <motion.div
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.5, delay: 4.2 }}
+                    >
+                      <div className="text-base font-bold text-gray-900">Premiado</div>
+                      <div className="text-sm text-gray-500">Melhor clínica 2024</div>
+                    </motion.div>
                   </div>
-                  <div>
-                    <div className="text-base font-bold text-gray-900">Premiado</div>
-                    <div className="text-sm text-gray-500">Melhor clínica 2024</div>
-                  </div>
-                </div>
+                </motion.div>
               </motion.div>
             </motion.div>
           </div>
@@ -312,22 +560,67 @@ export default function LandingPage() {
         {/* Scroll Indicator */}
         <motion.div
           className="absolute bottom-10 left-1/2 transform -translate-x-1/2 hidden lg:block"
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
+          initial={{ opacity: 0, scale: 0, y: -50, rotateX: -90 }}
+          animate={{ opacity: 1, scale: 1, y: 0, rotateX: 0 }}
+          transition={{
+            duration: 1,
+            delay: 4.3,
+            ease: [0.68, -0.55, 0.265, 1.55]
+          }}
         >
-          <div className="w-6 h-10 border-2 border-gray-300 rounded-full flex justify-center">
+          <motion.div
+            className="w-6 h-10 border-2 border-gray-300 rounded-full flex justify-center"
+            animate={{ y: [0, 10, 0] }}
+            transition={{
+              duration: 1.5,
+              repeat: Infinity,
+              delay: 4.8
+            }}
+          >
             <motion.div
               className="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2"
               animate={{ y: [0, 16, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                delay: 4.8
+              }}
             />
-          </div>
+          </motion.div>
         </motion.div>
       </section>
 
       {/* Services Section */}
-      <section id="serviços" className="py-32 bg-gradient-to-b from-white to-gray-50">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+      <section id="serviços" className="py-32 bg-gradient-to-b from-white to-gray-50 relative overflow-hidden">
+        {/* Gradient circles */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <motion.div
+            className="absolute top-20 right-20 w-[500px] h-[500px] bg-gradient-to-bl from-blue-200/50 to-indigo-300/40 rounded-full filter blur-3xl"
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+          <motion.div
+            className="absolute bottom-20 left-20 w-[600px] h-[600px] bg-gradient-to-tr from-indigo-200/40 to-blue-200/50 rounded-full filter blur-3xl"
+            animate={{
+              scale: [1, 1.15, 1],
+              opacity: [0.4, 0.6, 0.4],
+            }}
+            transition={{
+              duration: 10,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 1
+            }}
+          />
+        </div>
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
           <motion.div
             className="text-center max-w-3xl mx-auto mb-20"
             initial={{ opacity: 0, y: 30 }}
@@ -387,8 +680,23 @@ export default function LandingPage() {
       </section>
 
       {/* About Section */}
-      <section id="sobre" className="py-32 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+      <section id="sobre" className="py-32 bg-gray-50 relative overflow-hidden">
+        {/* Gradient circles */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <motion.div
+            className="absolute top-1/3 left-10 w-[550px] h-[550px] bg-gradient-to-br from-indigo-300/50 to-blue-300/60 rounded-full filter blur-3xl"
+            animate={{
+              scale: [1, 1.1, 1],
+              opacity: [0.4, 0.6, 0.4],
+            }}
+            transition={{
+              duration: 9,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+        </div>
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
           <div className="grid lg:grid-cols-2 gap-20 items-center">
             <motion.div
               className="relative"
@@ -455,8 +763,36 @@ export default function LandingPage() {
       </section>
 
       {/* Team Section */}
-      <section className="py-32 bg-white">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+      <section className="py-32 bg-white relative overflow-hidden">
+        {/* Gradient circles */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <motion.div
+            className="absolute top-1/4 left-1/3 w-[650px] h-[650px] bg-gradient-to-br from-blue-300/60 to-indigo-300/50 rounded-full filter blur-3xl"
+            animate={{
+              scale: [1, 1.15, 1],
+              opacity: [0.4, 0.6, 0.4],
+            }}
+            transition={{
+              duration: 10,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+          <motion.div
+            className="absolute bottom-1/4 right-1/4 w-[550px] h-[550px] bg-gradient-to-tl from-indigo-300/50 to-blue-200/60 rounded-full filter blur-3xl"
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 1.5
+            }}
+          />
+        </div>
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
           <motion.div
             className="text-center max-w-3xl mx-auto mb-20"
             initial={{ opacity: 0, y: 30 }}
@@ -560,8 +896,36 @@ export default function LandingPage() {
       </section>
 
       {/* Contact Section */}
-      <section id="contato" className="py-32 bg-gradient-to-b from-gray-50 to-white">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+      <section id="contato" className="py-32 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
+        {/* Gradient circles */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <motion.div
+            className="absolute top-20 right-1/4 w-[600px] h-[600px] bg-gradient-to-bl from-blue-300/60 to-indigo-200/50 rounded-full filter blur-3xl"
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.4, 0.6, 0.4],
+            }}
+            transition={{
+              duration: 9,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+          <motion.div
+            className="absolute bottom-10 left-1/4 w-[550px] h-[550px] bg-gradient-to-tr from-indigo-300/50 to-blue-300/60 rounded-full filter blur-3xl"
+            animate={{
+              scale: [1, 1.15, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 1
+            }}
+          />
+        </div>
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
           <div className="grid lg:grid-cols-2 gap-20">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
