@@ -73,3 +73,40 @@ html {
   outline: 2px solid #3B82F6;
   outline-offset: 2px;
 }
+
+/* Hide Spline watermark globally */
+spline-viewer #logo,
+spline-viewer .logo,
+spline-viewer [class*="logo"],
+spline-viewer [id*="logo"],
+spline-viewer [class*="watermark"],
+spline-viewer [id*="watermark"],
+spline-viewer a[href*="spline"],
+spline-viewer a[href*="spline.design"],
+spline-viewer > div > a:last-child,
+spline-viewer canvas + a,
+spline-viewer canvas ~ a,
+spline-viewer > a,
+spline-viewer div[style*="position: absolute"][style*="bottom"],
+spline-viewer div[style*="position: fixed"][style*="bottom"] {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  position: absolute !important;
+  left: -9999px !important;
+  top: -9999px !important;
+}
+
+spline-viewer {
+  position: relative;
+  overflow: hidden;
+}
+
+spline-viewer canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}

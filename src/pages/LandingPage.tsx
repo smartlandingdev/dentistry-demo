@@ -92,7 +92,7 @@ export default function LandingPage() {
       </motion.header>
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
+      <section className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-gradient-to-br from-white via-gray-50/30 to-white">
         {/* Animated Background Blobs */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <motion.div
@@ -120,6 +120,48 @@ export default function LandingPage() {
               repeat: Infinity,
               ease: "easeInOut",
               delay: 1
+            }}
+          />
+
+          {/* Additional gradient circles */}
+          <motion.div
+            className="absolute top-1/3 right-1/4 w-64 h-64 bg-gradient-to-br from-blue-200/40 to-indigo-200/40 rounded-full filter blur-2xl"
+            animate={{
+              scale: [1, 1.15, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{
+              duration: 6,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 0.5
+            }}
+          />
+
+          <motion.div
+            className="absolute bottom-1/3 left-1/3 w-80 h-80 bg-gradient-to-tr from-indigo-100/30 to-blue-100/30 rounded-full filter blur-3xl"
+            animate={{
+              scale: [1, 1.1, 1],
+              opacity: [0.2, 0.4, 0.2],
+            }}
+            transition={{
+              duration: 7,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 1.5
+            }}
+          />
+
+          <motion.div
+            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-blue-50/20 to-indigo-50/20 rounded-full filter blur-3xl"
+            animate={{
+              scale: [1, 1.2, 1],
+              rotate: [0, 180, 360],
+            }}
+            transition={{
+              duration: 15,
+              repeat: Infinity,
+              ease: "linear"
             }}
           />
         </div>
@@ -233,33 +275,33 @@ export default function LandingPage() {
 
               {/* Floating Cards */}
               <motion.div
-                className="absolute top-20 -left-4 bg-white/80 backdrop-blur-lg p-4 rounded-2xl shadow-xl border border-gray-100"
+                className="absolute top-20 -left-4 bg-white/80 backdrop-blur-lg p-6 rounded-3xl shadow-2xl border border-gray-100"
                 animate={{ y: [0, -15, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-gradient-to-br from-[#1A365D] to-[#3B82F6] rounded-xl flex items-center justify-center">
-                    <Shield className="w-6 h-6 text-white" />
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 bg-gradient-to-br from-[#1A365D] to-[#3B82F6] rounded-2xl flex items-center justify-center shadow-lg">
+                    <Shield className="w-8 h-8 text-white" />
                   </div>
                   <div>
-                    <div className="text-sm font-semibold text-gray-900">100% Seguro</div>
-                    <div className="text-xs text-gray-500">Protocolos certificados</div>
+                    <div className="text-base font-bold text-gray-900">100% Seguro</div>
+                    <div className="text-sm text-gray-500">Protocolos certificados</div>
                   </div>
                 </div>
               </motion.div>
 
               <motion.div
-                className="absolute bottom-32 -right-4 bg-white/80 backdrop-blur-lg p-4 rounded-2xl shadow-xl border border-gray-100"
+                className="absolute bottom-32 -right-4 bg-white/80 backdrop-blur-lg p-6 rounded-3xl shadow-2xl border border-gray-100"
                 animate={{ y: [0, 15, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 2 }}
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-gradient-to-br from-[#1A365D] to-[#3B82F6] rounded-xl flex items-center justify-center">
-                    <Award className="w-6 h-6 text-white" />
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 bg-gradient-to-br from-[#1A365D] to-[#3B82F6] rounded-2xl flex items-center justify-center shadow-lg">
+                    <Award className="w-8 h-8 text-white" />
                   </div>
                   <div>
-                    <div className="text-sm font-semibold text-gray-900">Premiado</div>
-                    <div className="text-xs text-gray-500">Melhor clínica 2024</div>
+                    <div className="text-base font-bold text-gray-900">Premiado</div>
+                    <div className="text-sm text-gray-500">Melhor clínica 2024</div>
                   </div>
                 </div>
               </motion.div>
