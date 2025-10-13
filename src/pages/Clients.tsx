@@ -17,6 +17,14 @@ const Clients: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     const fetchClients = async () => {
@@ -49,19 +57,19 @@ const Clients: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="p-6 min-h-screen bg-gradient-to-br from-gray-50 to-white flex items-center justify-center">
-        <div className="text-gray-500">Carregando pacientes...</div>
+      <div className="p-4 sm:p-6 min-h-screen bg-gradient-to-br from-gray-50 to-white flex items-center justify-center">
+        <div className="text-gray-500 text-sm sm:text-base">Carregando pacientes...</div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="p-6 min-h-screen bg-gradient-to-br from-gray-50 to-white">
-        <div className="bg-red-50 border border-red-200 text-red-700 p-6 rounded-2xl">
-          <p className="font-semibold mb-2">Erro ao carregar pacientes</p>
-          <p className="text-sm">{error}</p>
-          <p className="text-sm mt-2">
+      <div className="p-4 sm:p-6 min-h-screen bg-gradient-to-br from-gray-50 to-white">
+        <div className="bg-red-50 border border-red-200 text-red-700 p-4 sm:p-6 rounded-xl sm:rounded-2xl">
+          <p className="font-semibold mb-2 text-sm sm:text-base">Erro ao carregar pacientes</p>
+          <p className="text-xs sm:text-sm">{error}</p>
+          <p className="text-xs sm:text-sm mt-2">
             Certifique-se de que o servidor backend está rodando em http://localhost:3001
           </p>
         </div>
@@ -69,54 +77,38 @@ const Clients: React.FC = () => {
     );
   }
 
+  const Container = isMobile ? 'div' : motion.div;
+  const Button = isMobile ? 'button' : motion.button;
+
   return (
-    <div className="p-6 bg-gradient-to-br from-gray-50 to-white min-h-screen">
+    <div className="p-4 sm:p-6 bg-gradient-to-br from-gray-50 to-white min-h-screen">
       {/* Cabeçalho */}
-      <motion.div
-        className="mb-8"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-[#1A365D] to-[#3B82F6] bg-clip-text text-transparent">
+      <Container className="mb-6 sm:mb-8" {...(!isMobile && { initial: { opacity: 0, y: -20 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.5 } })}>
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#1A365D] to-[#3B82F6] bg-clip-text text-transparent">
           Pacientes
         </h1>
-        <p className="text-gray-600 mt-2 text-lg">Gerencie os pacientes da clínica</p>
-      </motion.div>
+        <p className="text-gray-600 mt-1 sm:mt-2 text-sm sm:text-base md:text-lg">Gerencie os pacientes da clínica</p>
+      </Container>
 
       {/* Barra de ações */}
-      <motion.div
-        className="flex flex-col md:flex-row gap-4 mb-8"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.1 }}
-      >
+      <Container className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6 sm:mb-8" {...(!isMobile && { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.5, delay: 0.1 } })}>
         <div className="flex-1 relative">
-          <Search className="absolute left-4 top-4 w-5 h-5 text-gray-400" />
+          <Search className="absolute left-3 sm:left-4 top-3 sm:top-4 w-4 h-4 sm:w-5 sm:h-5 text-gray-400" />
           <input
             type="text"
             placeholder="Buscar por nome, telefone ou e-mail..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-12 pr-4 py-4 border border-gray-200 bg-white rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#3B82F6] focus:border-transparent transition-all"
+            className="w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-3 sm:py-4 border border-gray-200 bg-white rounded-lg sm:rounded-xl text-sm sm:text-base text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#3B82F6] focus:border-transparent transition-all"
           />
         </div>
-        <motion.button
-          className="bg-gradient-to-r from-[#1A365D] to-[#3B82F6] hover:shadow-xl text-white px-8 py-4 font-semibold rounded-xl transition-all duration-300 flex items-center justify-center gap-2"
-          whileHover={{ scale: 1.02, y: -2 }}
-          whileTap={{ scale: 0.98 }}
-        >
-          <Plus className="w-5 h-5" /> Novo Paciente
-        </motion.button>
-      </motion.div>
+        <Button className="bg-gradient-to-r from-[#1A365D] to-[#3B82F6] hover:shadow-xl text-white px-6 sm:px-8 py-3 sm:py-4 font-semibold rounded-lg sm:rounded-xl transition-all duration-300 flex items-center justify-center gap-2 text-sm sm:text-base" {...(!isMobile && { whileHover: { scale: 1.02, y: -2 }, whileTap: { scale: 0.98 } })}>
+          <Plus className="w-4 h-4 sm:w-5 sm:h-5" /> Novo Paciente
+        </Button>
+      </Container>
 
-      {/* Lista de pacientes */}
-      <motion.div
-        className="bg-white rounded-3xl border border-gray-100 shadow-lg overflow-hidden"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-      >
+      {/* Lista de pacientes - Desktop Table View */}
+      <div className="hidden md:block bg-white rounded-2xl sm:rounded-3xl border border-gray-100 shadow-lg overflow-hidden">
         {/* Cabeçalho da tabela */}
         <div className="grid grid-cols-12 gap-4 p-6 bg-gradient-to-r from-gray-50 to-gray-100 font-semibold text-gray-700 text-sm">
           <div className="col-span-3">Nome</div>
@@ -129,13 +121,10 @@ const Clients: React.FC = () => {
 
         {/* Linhas */}
         {filteredClients.length > 0 ? (
-          filteredClients.map((client, index) => (
-            <motion.div
+          filteredClients.map((client) => (
+            <div
               key={client.id}
               className="grid grid-cols-12 gap-4 p-6 border-t border-gray-100 hover:bg-gray-50 transition-colors"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: index * 0.05 }}
             >
               <div className="col-span-3">
                 <div className="font-semibold text-gray-900">{client.name}</div>
@@ -161,32 +150,90 @@ const Clients: React.FC = () => {
                 )}
               </div>
               <div className="col-span-1 flex items-center justify-center gap-2">
-                <motion.button
+                <button
                   className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
                   title="Editar"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
                 >
                   <Edit className="w-4 h-4 text-gray-600" />
-                </motion.button>
-                <motion.button
+                </button>
+                <button
                   className="p-2 hover:bg-red-50 rounded-lg transition-colors"
                   title="Excluir"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
                 >
                   <Trash2 className="w-4 h-4 text-red-500" />
-                </motion.button>
+                </button>
               </div>
-            </motion.div>
+            </div>
           ))
         ) : (
           <div className="p-12 text-center text-gray-500">Nenhum paciente encontrado</div>
         )}
-      </motion.div>
+      </div>
+
+      {/* Lista de pacientes - Mobile Card View */}
+      <div className="md:hidden space-y-3">
+        {filteredClients.length > 0 ? (
+          filteredClients.map((client) => (
+            <div
+              key={client.id}
+              className="bg-white rounded-xl border border-gray-100 shadow-lg p-4"
+            >
+              <div className="flex items-start justify-between mb-3">
+                <div>
+                  <h3 className="font-semibold text-gray-900 text-base">{client.name}</h3>
+                  <p className="text-xs text-gray-500">{client.totalVisits} consultas</p>
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                    title="Editar"
+                  >
+                    <Edit className="w-4 h-4 text-gray-600" />
+                  </button>
+                  <button
+                    className="p-2 hover:bg-red-50 rounded-lg transition-colors"
+                    title="Excluir"
+                  >
+                    <Trash2 className="w-4 h-4 text-red-500" />
+                  </button>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex items-center gap-2 text-gray-700">
+                  <Phone className="w-3.5 h-3.5 text-gray-400" />
+                  <span className="text-sm">{client.phone}</span>
+                </div>
+                <div className="flex items-center gap-2 text-gray-700">
+                  <Mail className="w-3.5 h-3.5 text-gray-400" />
+                  <span className="text-sm truncate">{client.email}</span>
+                </div>
+                <div className="flex items-center gap-2 text-gray-700">
+                  <Calendar className="w-3.5 h-3.5 text-gray-400" />
+                  <span className="text-sm">
+                    Última visita: {client.lastVisit || "-"}
+                  </span>
+                </div>
+                {client.nextAppointment && (
+                  <div className="flex items-center gap-2 text-gray-700">
+                    <Calendar className="w-3.5 h-3.5 text-gray-400" />
+                    <span className="text-sm">
+                      Próxima: {client.nextAppointment}
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="p-8 text-center text-gray-500 bg-white rounded-xl border border-gray-100">
+            Nenhum paciente encontrado
+          </div>
+        )}
+      </div>
 
       {/* Estatísticas */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6 mt-6 sm:mt-8">
         {[
           {
             label: "Total de Pacientes",
@@ -206,27 +253,23 @@ const Clients: React.FC = () => {
             icon: Calendar,
             color: "from-purple-500 to-purple-600",
           },
-        ].map((stat, index) => {
+        ].map((stat) => {
           const Icon = stat.icon;
           return (
-            <motion.div
+            <div
               key={stat.label}
-              className="bg-white rounded-3xl p-6 border border-gray-100 shadow-lg hover:shadow-2xl transition-all duration-300"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 + index * 0.1 }}
-              whileHover={{ y: -4 }}
+              className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-gray-100 shadow-lg hover:shadow-xl transition-shadow duration-300"
             >
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center justify-between mb-3 sm:mb-4">
                 <div
-                  className={`w-12 h-12 bg-gradient-to-br ${stat.color} rounded-2xl flex items-center justify-center shadow-lg`}
+                  className={`w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br ${stat.color} rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg`}
                 >
-                  <Icon className="w-6 h-6 text-white" />
+                  <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                 </div>
               </div>
-              <div className="text-sm font-medium text-gray-500 mb-1">{stat.label}</div>
-              <div className="text-3xl font-bold text-gray-900">{stat.value}</div>
-            </motion.div>
+              <div className="text-xs sm:text-sm font-medium text-gray-500 mb-1">{stat.label}</div>
+              <div className="text-2xl sm:text-3xl font-bold text-gray-900">{stat.value}</div>
+            </div>
           );
         })}
       </div>

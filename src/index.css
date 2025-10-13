@@ -62,10 +62,27 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Performance optimizations - Force GPU acceleration */
+* {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  perspective: 1000;
+}
+
 /* Selection */
 ::selection {
   background: #1A365D;
   color: white;
+}
+
+/* Optimize animations for smooth performance */
+@media (prefers-reduced-motion: no-preference) {
+  motion-div,
+  [style*="willChange"],
+  .motion-element {
+    transform: translate3d(0, 0, 0);
+  }
 }
 
 /* Focus Styles */
@@ -109,4 +126,19 @@ spline-viewer canvas {
   display: block;
   width: 100%;
   height: 100%;
+}
+
+/* Optimize backdrop-blur and filter blur for better performance */
+.backdrop-blur-lg,
+.backdrop-blur-xl,
+[class*="backdrop-blur"] {
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  will-change: backdrop-filter;
+}
+
+/* Optimize gradient animations */
+[class*="bg-gradient"] {
+  will-change: transform, opacity;
+  transform: translateZ(0);
 }

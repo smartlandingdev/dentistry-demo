@@ -182,12 +182,12 @@ const Calendar: React.FC<CalendarProps> = () => {
   }));
 
   return (
-    <div className={`bg-white rounded-3xl border border-gray-100 shadow-lg p-6 overflow-hidden ${styles['calendar-container']}`}>
+    <div className={`bg-white rounded-xl sm:rounded-2xl md:rounded-3xl border border-gray-100 shadow-lg p-3 sm:p-4 md:p-6 overflow-hidden ${styles['calendar-container']}`}>
       {/* Appointments Status */}
-      <div className="mb-6 p-4 bg-gradient-to-r from-gray-50 to-white rounded-2xl border border-gray-200 flex items-center justify-between gap-2 flex-wrap">
-        <div className="flex items-center gap-3 flex-1 min-w-[200px]">
+      <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-gradient-to-r from-gray-50 to-white rounded-lg sm:rounded-xl md:rounded-2xl border border-gray-200 flex items-center justify-between gap-2 flex-wrap">
+        <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-[200px]">
           <div
-            className={`w-3 h-3 rounded-full ${
+            className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full ${
               loading
                 ? 'bg-yellow-500 animate-pulse'
                 : error
@@ -195,7 +195,7 @@ const Calendar: React.FC<CalendarProps> = () => {
                 : 'bg-green-500'
             }`}
           />
-          <span className="text-sm font-semibold text-gray-900">
+          <span className="text-xs sm:text-sm font-semibold text-gray-900">
             {loading
               ? 'Carregando agendamentos...'
               : error
@@ -207,7 +207,7 @@ const Calendar: React.FC<CalendarProps> = () => {
 
       {/* Error Message */}
       {error && (
-        <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-2xl text-sm font-medium">
+        <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg sm:rounded-xl md:rounded-2xl text-xs sm:text-sm font-medium">
           {error}
         </div>
       )}

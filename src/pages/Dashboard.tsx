@@ -34,6 +34,14 @@ const Dashboard: React.FC = () => {
 
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [upcomingAppointments, setUpcomingAppointments] = useState<Appointment[]>([]);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -116,87 +124,75 @@ const Dashboard: React.FC = () => {
     console.log("Novo agendamento:", appointment);
   };
 
+  const Container = isMobile ? 'div' : motion.div;
+  const Button = isMobile ? 'button' : motion.button;
+
   return (
-    <div className="p-6 bg-gradient-to-br from-gray-50 to-white min-h-screen">
+    <div className="p-4 sm:p-6 bg-gradient-to-br from-gray-50 to-white min-h-screen">
       {/* Cabeçalho */}
-      <motion.div
-        className="mb-8"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-[#1A365D] to-[#3B82F6] bg-clip-text text-transparent">
+      <Container className="mb-6 sm:mb-8" {...(!isMobile && { initial: { opacity: 0, y: -20 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.5 } })}>
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#1A365D] to-[#3B82F6] bg-clip-text text-transparent">
           {t.dashboard.title}
         </h1>
-        <p className="text-gray-600 mt-2 text-lg">{t.dashboard.subtitle}</p>
-      </motion.div>
+        <p className="text-gray-600 mt-1 sm:mt-2 text-sm sm:text-base md:text-lg">{t.dashboard.subtitle}</p>
+      </Container>
 
       {/* Estatísticas */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6 mb-6 sm:mb-8">
         {stats.map((stat, index) => {
           const Icon = stat.icon;
           return (
-            <motion.div
+            <Container
               key={stat.name}
-              className="bg-white rounded-3xl p-6 border border-gray-100 hover:shadow-2xl transition-all duration-300 hover-lift"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              whileHover={{ y: -8 }}
+              className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-gray-100 hover:shadow-xl transition-shadow duration-300"
+              {...(!isMobile && { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.5, delay: index * 0.1 }, whileHover: { y: -8 } })}
             >
-              <div className="flex items-center justify-between mb-4">
-                <div className={`w-14 h-14 bg-gradient-to-br ${stat.color} rounded-2xl flex items-center justify-center shadow-lg`}>
-                  <Icon className="w-7 h-7 text-white" />
+              <div className="flex items-center justify-between mb-3 sm:mb-4">
+                <div className={`w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br ${stat.color} rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg`}>
+                  <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
                 </div>
-                <span className="text-sm font-semibold text-green-600 bg-green-50 px-3 py-1 rounded-full">
+                <span className="text-xs sm:text-sm font-semibold text-green-600 bg-green-50 px-2 sm:px-3 py-1 rounded-full">
                   {stat.change}
                 </span>
               </div>
-              <p className="text-sm font-medium text-gray-500 mb-1">{stat.name}</p>
-              <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
-              <p className="text-xs text-gray-400 mt-2">{t.dashboard.stats.fromLastMonth}</p>
-            </motion.div>
+              <p className="text-xs sm:text-sm font-medium text-gray-500 mb-1">{stat.name}</p>
+              <p className="text-2xl sm:text-3xl font-bold text-gray-900">{stat.value}</p>
+              <p className="text-xs text-gray-400 mt-1 sm:mt-2">{t.dashboard.stats.fromLastMonth}</p>
+            </Container>
           );
         })}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
         {/* Próximos agendamentos */}
-        <motion.div
-          className="bg-white rounded-3xl p-8 border border-gray-100 shadow-lg"
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-            <div className="w-2 h-8 bg-gradient-to-b from-[#1A365D] to-[#3B82F6] rounded-full"></div>
+        <Container className="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-8 border border-gray-100 shadow-lg" {...(!isMobile && { initial: { opacity: 0, x: -20 }, animate: { opacity: 1, x: 0 }, transition: { duration: 0.6 } })}>
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3">
+            <div className="w-1.5 sm:w-2 h-6 sm:h-8 bg-gradient-to-b from-[#1A365D] to-[#3B82F6] rounded-full"></div>
             {t.dashboard.upcomingAppointments.title}
           </h2>
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {upcomingAppointments.length > 0 ? (
-              upcomingAppointments.map((appointment, index) => (
-                <motion.div
+              upcomingAppointments.map((appointment) => (
+                <div
                   key={appointment.id_agendamento}
-                  className="flex items-center justify-between p-5 bg-gradient-to-br from-gray-50 to-white rounded-2xl border border-gray-100 hover:shadow-lg transition-all duration-300"
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  whileHover={{ x: 4 }}
+                  className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 sm:p-5 bg-gradient-to-br from-gray-50 to-white rounded-xl sm:rounded-2xl border border-gray-100 hover:shadow-lg transition-shadow duration-300 gap-3 sm:gap-0"
                 >
-                  <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-[#1A365D] to-[#3B82F6] rounded-xl flex items-center justify-center shadow-md">
-                      <CalendarIcon className="w-6 h-6 text-white" />
+                  <div className="flex items-center space-x-3 sm:space-x-4">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-[#1A365D] to-[#3B82F6] rounded-lg sm:rounded-xl flex items-center justify-center shadow-md flex-shrink-0">
+                      <CalendarIcon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-900">{appointment.clientName}</h3>
-                      <p className="text-sm text-gray-500">{appointment.service}</p>
+                      <h3 className="font-semibold text-gray-900 text-sm sm:text-base">{appointment.clientName}</h3>
+                      <p className="text-xs sm:text-sm text-gray-500">{appointment.service}</p>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <p className="text-sm font-semibold text-gray-900">{appointment.time}</p>
-                    <p className="text-sm text-gray-500 mb-2">{appointment.date}</p>
+                  <div className="flex items-center justify-between sm:block sm:text-right pl-13 sm:pl-0">
+                    <div>
+                      <p className="text-xs sm:text-sm font-semibold text-gray-900">{appointment.time}</p>
+                      <p className="text-xs sm:text-sm text-gray-500 mb-1 sm:mb-2">{appointment.date}</p>
+                    </div>
                     <span
-                      className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${
+                      className={`inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs font-semibold ${
                         appointment.status === "confirmed"
                           ? "bg-gradient-to-r from-green-500 to-green-600 text-white"
                           : "bg-gradient-to-r from-yellow-400 to-yellow-500 text-white"
@@ -207,57 +203,49 @@ const Dashboard: React.FC = () => {
                         : t.dashboard.upcomingAppointments.pending}
                     </span>
                   </div>
-                </motion.div>
+                </div>
               ))
             ) : (
-              <p className="text-gray-500 text-center py-8">Nenhum próximo agendamento</p>
+              <p className="text-gray-500 text-center py-6 sm:py-8 text-sm">Nenhum próximo agendamento</p>
             )}
           </div>
-        </motion.div>
+        </Container>
 
         {/* Ações rápidas */}
-        <motion.div
-          className="bg-white rounded-3xl p-8 border border-gray-100 shadow-lg"
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-            <div className="w-2 h-8 bg-gradient-to-b from-[#1A365D] to-[#3B82F6] rounded-full"></div>
+        <Container className="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-8 border border-gray-100 shadow-lg" {...(!isMobile && { initial: { opacity: 0, x: 20 }, animate: { opacity: 1, x: 0 }, transition: { duration: 0.6 } })}>
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3">
+            <div className="w-1.5 sm:w-2 h-6 sm:h-8 bg-gradient-to-b from-[#1A365D] to-[#3B82F6] rounded-full"></div>
             {t.dashboard.quickActions.title}
           </h2>
-          <div className="space-y-4">
-            <motion.button
+          <div className="space-y-3 sm:space-y-4">
+            <Button
               onClick={openModal}
-              className="w-full bg-gradient-to-r from-[#1A365D] to-[#3B82F6] hover:shadow-xl text-white p-5 font-semibold rounded-2xl transition-all duration-300 flex items-center justify-center gap-3"
-              whileHover={{ scale: 1.02, y: -2 }}
-              whileTap={{ scale: 0.98 }}
+              className="w-full bg-gradient-to-r from-[#1A365D] to-[#3B82F6] hover:shadow-xl text-white p-4 sm:p-5 font-semibold rounded-xl sm:rounded-2xl transition-all duration-300 flex items-center justify-center gap-2 sm:gap-3 text-sm sm:text-base"
+              {...(!isMobile && { whileHover: { scale: 1.02, y: -2 }, whileTap: { scale: 0.98 } })}
             >
-              <CalendarIcon className="w-5 h-5" />
+              <CalendarIcon className="w-4 h-4 sm:w-5 sm:h-5" />
               {t.dashboard.quickActions.scheduleNew}
-            </motion.button>
+            </Button>
 
-            <motion.button
+            <Button
               onClick={() => navigate("/sistema/calendar")}
-              className="w-full bg-white hover:bg-gray-50 text-gray-700 p-5 font-semibold rounded-2xl transition-all border-2 border-gray-200 hover:border-[#3B82F6] flex items-center justify-center gap-3"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+              className="w-full bg-white hover:bg-gray-50 text-gray-700 p-4 sm:p-5 font-semibold rounded-xl sm:rounded-2xl transition-all border-2 border-gray-200 hover:border-[#3B82F6] flex items-center justify-center gap-2 sm:gap-3 text-sm sm:text-base"
+              {...(!isMobile && { whileHover: { scale: 1.02 }, whileTap: { scale: 0.98 } })}
             >
-              <CalendarIcon className="w-5 h-5" />
+              <CalendarIcon className="w-4 h-4 sm:w-5 sm:h-5" />
               {t.dashboard.quickActions.viewCalendar}
-            </motion.button>
+            </Button>
 
-            <motion.button
+            <Button
               onClick={() => navigate("/sistema/clients")}
-              className="w-full bg-white hover:bg-gray-50 text-gray-700 p-5 font-semibold rounded-2xl transition-all border-2 border-gray-200 hover:border-[#3B82F6] flex items-center justify-center gap-3"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+              className="w-full bg-white hover:bg-gray-50 text-gray-700 p-4 sm:p-5 font-semibold rounded-xl sm:rounded-2xl transition-all border-2 border-gray-200 hover:border-[#3B82F6] flex items-center justify-center gap-2 sm:gap-3 text-sm sm:text-base"
+              {...(!isMobile && { whileHover: { scale: 1.02 }, whileTap: { scale: 0.98 } })}
             >
-              <Users className="w-5 h-5" />
+              <Users className="w-4 h-4 sm:w-5 sm:h-5" />
               {t.dashboard.quickActions.manageClients}
-            </motion.button>
+            </Button>
           </div>
-        </motion.div>
+        </Container>
       </div>
 
       <AppointmentModal
