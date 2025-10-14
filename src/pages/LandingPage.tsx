@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useEffect, useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
 import {
   Calendar,
   Shield,
@@ -21,6 +21,8 @@ export default function LandingPage() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
+  const heroRef = useRef(null);
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
@@ -40,6 +42,37 @@ export default function LandingPage() {
 
   const Container = isMobile ? 'div' : motion.div;
   const Button = isMobile ? 'button' : motion.button;
+
+  // Componente para animações on-scroll
+  const ScrollReveal = ({ children, className = "", delay = 0 }: any) => {
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: true, amount: 0.3 });
+
+    if (isMobile) {
+      return <div ref={ref} className={className}>{children}</div>;
+    }
+
+    return (
+      <motion.div
+        ref={ref}
+        className={className}
+        initial={{ opacity: 0, y: 100, scale: 0.9, filter: "blur(20px)" }}
+        animate={isInView ? {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          filter: "blur(0px)"
+        } : {}}
+        transition={{
+          duration: 1.4,
+          delay,
+          ease: [0.16, 1, 0.3, 1]
+        }}
+      >
+        {children}
+      </motion.div>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -86,7 +119,7 @@ export default function LandingPage() {
       </header>
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center pt-20 pb-12 md:pb-0 overflow-hidden bg-gradient-to-br from-white via-gray-50/30 to-white">
+      <section ref={heroRef} className="relative min-h-screen flex items-center pt-20 pb-12 md:pb-0 overflow-hidden bg-gradient-to-br from-white via-gray-50/30 to-white">
         {/* Background Image - Super Transparent */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-100">
           <div
@@ -99,62 +132,241 @@ export default function LandingPage() {
           />
         </div>
 
-        {/* Static Background Blobs - Lighter on mobile */}
+        {/* Animated Background Blobs - Lighter on mobile, animated on desktop */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 right-1/4 w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-gradient-to-br from-blue-300/40 md:from-blue-300/60 to-indigo-400/30 md:to-indigo-400/50 rounded-full filter blur-3xl opacity-50" />
-          <div className="absolute bottom-1/4 left-1/4 w-[350px] md:w-[700px] h-[350px] md:h-[700px] bg-gradient-to-tr from-indigo-300/30 md:from-indigo-300/50 to-blue-400/40 md:to-blue-400/60 rounded-full filter blur-3xl opacity-40" />
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[400px] md:w-[750px] h-[400px] md:h-[750px] bg-gradient-to-r from-blue-200/30 md:from-blue-200/40 to-indigo-200/35 md:to-indigo-200/50 rounded-full filter blur-3xl opacity-45" />
+          <Container
+            className="absolute top-1/4 right-1/4 w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-gradient-to-br from-blue-300/40 md:from-blue-300/60 to-indigo-400/30 md:to-indigo-400/50 rounded-full filter blur-3xl opacity-50"
+            {...(!isMobile && {
+              animate: {
+                x: [0, 120, -40, 0],
+                y: [0, -80, 50, 0],
+                scale: [1, 1.25, 0.9, 1],
+                rotate: [0, 90, 180, 360]
+              },
+              transition: {
+                duration: 45,
+                repeat: Infinity,
+                ease: [0.45, 0, 0.55, 1]
+              }
+            })}
+          />
+          <Container
+            className="absolute bottom-1/4 left-1/4 w-[350px] md:w-[700px] h-[350px] md:h-[700px] bg-gradient-to-tr from-indigo-300/30 md:from-indigo-300/50 to-blue-400/40 md:to-blue-400/60 rounded-full filter blur-3xl opacity-40"
+            {...(!isMobile && {
+              animate: {
+                x: [0, -90, 60, 0],
+                y: [0, 100, -50, 0],
+                scale: [1, 1.3, 0.95, 1],
+                rotate: [0, -120, 240, 360]
+              },
+              transition: {
+                duration: 50,
+                repeat: Infinity,
+                ease: [0.45, 0, 0.55, 1]
+              }
+            })}
+          />
+          <Container
+            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[400px] md:w-[750px] h-[400px] md:h-[750px] bg-gradient-to-r from-blue-200/30 md:from-blue-200/40 to-indigo-200/35 md:to-indigo-200/50 rounded-full filter blur-3xl opacity-45"
+            {...(!isMobile && {
+              animate: {
+                rotate: [0, 360],
+                scale: [1, 1.15, 0.95, 1],
+                opacity: [0.45, 0.6, 0.35, 0.45]
+              },
+              transition: {
+                duration: 60,
+                repeat: Infinity,
+                ease: "linear"
+              }
+            })}
+          />
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 w-full relative z-10">
+        <Container className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 w-full relative z-10">
           <div className="grid lg:grid-cols-2 gap-8 md:gap-16 lg:gap-24 items-center">
             {/* Left Content */}
             <div className="space-y-6 md:space-y-10">
               {/* Badge - Primeiro elemento */}
-              <div className="inline-flex items-center gap-2 px-3 md:px-4 py-1.5 md:py-2 bg-blue-50 border border-blue-100 rounded-full text-xs md:text-sm text-[#1A365D] font-medium">
+              <Container
+                className="inline-flex items-center gap-2 px-3 md:px-4 py-1.5 md:py-2 bg-blue-50 border border-blue-100 rounded-full text-xs md:text-sm text-[#1A365D] font-medium"
+                {...(!isMobile && {
+                  initial: {
+                    opacity: 0,
+                    y: 100,
+                    scale: 0.5,
+                    filter: "blur(20px)",
+                    rotateX: -90
+                  },
+                  animate: {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    filter: "blur(0px)",
+                    rotateX: 0
+                  },
+                  transition: {
+                    duration: 1.8,
+                    ease: [0.16, 1, 0.3, 1],
+                    delay: 0.3
+                  }
+                })}
+                style={{ transformPerspective: 1000 }}
+              >
                 <Sparkles className="w-3 h-3 md:w-4 md:h-4" />
                 <span>Excelência em Odontologia</span>
-              </div>
+              </Container>
 
               {/* Título - Segundo elemento */}
               <div className="space-y-4 md:space-y-6">
-                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 tracking-tight leading-[1.1]">
-                  <span>Seu</span>{' '}
-                  <span>sorriso</span>{' '}
-                  <span className="bg-gradient-to-r from-[#1A365D] to-[#3B82F6] bg-clip-text text-transparent">
-                    perfeito
-                  </span>
-                  <br />
-                  <span>começa</span>{' '}
-                  <span>aqui</span>
-                </h1>
+                <Container
+                  {...(!isMobile && {
+                    initial: {
+                      opacity: 0,
+                      y: 120,
+                      scale: 0.8,
+                      filter: "blur(30px)",
+                      rotateX: -45
+                    },
+                    animate: {
+                      opacity: 1,
+                      y: 0,
+                      scale: 1,
+                      filter: "blur(0px)",
+                      rotateX: 0
+                    },
+                    transition: {
+                      duration: 2,
+                      delay: 0.6,
+                      ease: [0.16, 1, 0.3, 1]
+                    }
+                  })}
+                  style={{ transformPerspective: 1000 }}
+                >
+                  <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 tracking-tight leading-[1.1]">
+                    <span>Seu</span>{' '}
+                    <span>sorriso</span>{' '}
+                    <span className="bg-gradient-to-r from-[#1A365D] to-[#3B82F6] bg-clip-text text-transparent">
+                      perfeito
+                    </span>
+                    <br />
+                    <span>começa</span>{' '}
+                    <span>aqui</span>
+                  </h1>
+                </Container>
 
                 {/* Descrição - Terceiro elemento */}
-                <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed max-w-lg">
-                  Tecnologia de ponta e atendimento humanizado para
-                  transformar o seu sorriso.
-                </p>
+                <Container
+                  className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed max-w-lg"
+                  {...(!isMobile && {
+                    initial: {
+                      opacity: 0,
+                      y: 80,
+                      filter: "blur(15px)",
+                      x: -50
+                    },
+                    animate: {
+                      opacity: 1,
+                      y: 0,
+                      filter: "blur(0px)",
+                      x: 0
+                    },
+                    transition: {
+                      duration: 1.6,
+                      delay: 1,
+                      ease: [0.16, 1, 0.3, 1]
+                    }
+                  })}
+                >
+                  <p>
+                    Tecnologia de ponta e atendimento humanizado para
+                    transformar o seu sorriso.
+                  </p>
+                </Container>
               </div>
 
               {/* Botões - Quarto elemento */}
-              <div className="flex flex-col sm:flex-row flex-wrap gap-3 md:gap-4">
-                <button
+              <Container
+                className="flex flex-col sm:flex-row flex-wrap gap-3 md:gap-4"
+                {...(!isMobile && {
+                  initial: {
+                    opacity: 0,
+                    y: 60,
+                    scale: 0.9,
+                    filter: "blur(10px)"
+                  },
+                  animate: {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    filter: "blur(0px)"
+                  },
+                  transition: {
+                    duration: 1.5,
+                    delay: 1.3,
+                    ease: [0.16, 1, 0.3, 1]
+                  }
+                })}
+              >
+                <Button
                   onClick={() => navigate('/sistema')}
-                  className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-[#1A365D] to-[#3B82F6] text-white text-sm font-semibold rounded-xl hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 md:gap-3 group"
+                  className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-[#1A365D] to-[#3B82F6] text-white text-sm font-semibold rounded-xl hover:shadow-2xl transition-all duration-500 flex items-center justify-center gap-2 md:gap-3 group relative overflow-hidden"
+                  {...(!isMobile && {
+                    whileHover: {
+                      scale: 1.08,
+                      y: -6,
+                      boxShadow: "0 20px 60px rgba(59, 130, 246, 0.5)",
+                      rotateX: 5
+                    },
+                    whileTap: { scale: 0.95 },
+                    transition: { type: "spring", stiffness: 300, damping: 15 }
+                  })}
+                  style={{ transformPerspective: 1000 }}
                 >
                   <span>Agendar Consulta</span>
-                  <ArrowRight className="w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-1 transition-transform" />
-                </button>
+                  <ArrowRight className="w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-2 transition-transform duration-300" />
+                </Button>
 
-                <button
-                  className="px-6 sm:px-8 py-3 sm:py-4 border-2 border-gray-200 text-gray-700 text-sm font-semibold rounded-xl hover:border-[#3B82F6] hover:text-[#3B82F6] transition-all duration-300"
+                <Button
+                  className="px-6 sm:px-8 py-3 sm:py-4 border-2 border-gray-200 text-gray-700 text-sm font-semibold rounded-xl hover:border-[#3B82F6] hover:text-[#3B82F6] transition-all duration-500"
+                  {...(!isMobile && {
+                    whileHover: {
+                      scale: 1.08,
+                      y: -4,
+                      borderColor: "#3B82F6",
+                      boxShadow: "0 10px 40px rgba(59, 130, 246, 0.3)"
+                    },
+                    whileTap: { scale: 0.95 },
+                    transition: { type: "spring", stiffness: 300, damping: 15 }
+                  })}
                 >
                   Saiba Mais
-                </button>
-              </div>
+                </Button>
+              </Container>
 
               {/* Estatísticas - Quinto elemento */}
-              <div className="flex items-center gap-6 sm:gap-8 md:gap-12 pt-6 md:pt-8">
+              <Container
+                className="flex items-center gap-6 sm:gap-8 md:gap-12 pt-6 md:pt-8"
+                {...(!isMobile && {
+                  initial: {
+                    opacity: 0,
+                    y: 50,
+                    filter: "blur(10px)",
+                    scale: 0.95
+                  },
+                  animate: {
+                    opacity: 1,
+                    y: 0,
+                    filter: "blur(0px)",
+                    scale: 1
+                  },
+                  transition: {
+                    duration: 1.5,
+                    delay: 1.6,
+                    ease: [0.16, 1, 0.3, 1]
+                  }
+                })}
+              >
                 <div>
                   <div className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#1A365D] to-[#3B82F6] bg-clip-text text-transparent mb-1">
                     10+
@@ -185,15 +397,72 @@ export default function LandingPage() {
                     Satisfação
                   </div>
                 </div>
-              </div>
+              </Container>
             </div>
 
             {/* Right - 3D Spline - Hidden on mobile */}
-            <div className="hidden lg:block relative h-[700px]">
+            <Container
+              className="hidden lg:block relative h-[700px]"
+              {...(!isMobile && {
+                initial: {
+                  opacity: 0,
+                  x: 200,
+                  scale: 0.7,
+                  rotateY: 45,
+                  filter: "blur(30px)"
+                },
+                animate: {
+                  opacity: 1,
+                  x: 0,
+                  scale: 1,
+                  rotateY: 0,
+                  filter: "blur(0px)"
+                },
+                transition: {
+                  duration: 2.2,
+                  delay: 0.5,
+                  ease: [0.16, 1, 0.3, 1]
+                }
+              })}
+              style={{ transformStyle: "preserve-3d", perspective: 2000 }}
+            >
               <SplineViewer />
 
               {/* Floating Cards */}
-              <div className="absolute top-20 -left-4 bg-white/80 backdrop-blur-lg p-6 rounded-3xl shadow-2xl border border-gray-100">
+              <Container
+                className="absolute top-20 -left-4 bg-white/80 backdrop-blur-lg p-6 rounded-3xl shadow-2xl border border-gray-100"
+                {...(!isMobile && {
+                  initial: {
+                    opacity: 0,
+                    x: -100,
+                    y: -100,
+                    scale: 0.3,
+                    rotateZ: -45,
+                    filter: "blur(20px)"
+                  },
+                  animate: {
+                    opacity: 1,
+                    x: 0,
+                    y: 0,
+                    scale: 1,
+                    rotateZ: 0,
+                    filter: "blur(0px)"
+                  },
+                  transition: {
+                    duration: 1.8,
+                    delay: 1.5,
+                    ease: [0.16, 1, 0.3, 1]
+                  },
+                  whileHover: {
+                    scale: 1.15,
+                    y: -15,
+                    rotateY: 10,
+                    boxShadow: "0 30px 80px rgba(59, 130, 246, 0.4)",
+                    transition: { type: "spring", stiffness: 300, damping: 12 }
+                  }
+                })}
+                style={{ transformStyle: "preserve-3d" }}
+              >
                 <div className="flex items-center gap-4">
                   <div className="w-16 h-16 bg-gradient-to-br from-[#1A365D] to-[#3B82F6] rounded-2xl flex items-center justify-center shadow-lg">
                     <Shield className="w-8 h-8 text-white" />
@@ -203,9 +472,42 @@ export default function LandingPage() {
                     <div className="text-sm text-gray-500">Protocolos certificados</div>
                   </div>
                 </div>
-              </div>
+              </Container>
 
-              <div className="absolute bottom-32 -right-4 bg-white/80 backdrop-blur-lg p-6 rounded-3xl shadow-2xl border border-gray-100">
+              <Container
+                className="absolute bottom-32 -right-4 bg-white/80 backdrop-blur-lg p-6 rounded-3xl shadow-2xl border border-gray-100"
+                {...(!isMobile && {
+                  initial: {
+                    opacity: 0,
+                    x: 100,
+                    y: 100,
+                    scale: 0.3,
+                    rotateZ: 45,
+                    filter: "blur(20px)"
+                  },
+                  animate: {
+                    opacity: 1,
+                    x: 0,
+                    y: 0,
+                    scale: 1,
+                    rotateZ: 0,
+                    filter: "blur(0px)"
+                  },
+                  transition: {
+                    duration: 1.8,
+                    delay: 1.8,
+                    ease: [0.16, 1, 0.3, 1]
+                  },
+                  whileHover: {
+                    scale: 1.15,
+                    y: -15,
+                    rotateY: -10,
+                    boxShadow: "0 30px 80px rgba(245, 158, 11, 0.4)",
+                    transition: { type: "spring", stiffness: 300, damping: 12 }
+                  }
+                })}
+                style={{ transformStyle: "preserve-3d" }}
+              >
                 <div className="flex items-center gap-4">
                   <div className="w-16 h-16 bg-gradient-to-br from-[#1A365D] to-[#3B82F6] rounded-2xl flex items-center justify-center shadow-lg">
                     <Award className="w-8 h-8 text-white" />
@@ -215,17 +517,48 @@ export default function LandingPage() {
                     <div className="text-sm text-gray-500">Melhor clínica 2024</div>
                   </div>
                 </div>
-              </div>
-            </div>
+              </Container>
+            </Container>
           </div>
-        </div>
+        </Container>
 
         {/* Scroll Indicator */}
-        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 hidden lg:block">
-          <div className="w-6 h-10 border-2 border-gray-300 rounded-full flex justify-center">
-            <div className="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2" />
+        <Container
+          className="absolute bottom-10 left-1/2 transform -translate-x-1/2 hidden lg:block"
+          {...(!isMobile && {
+            initial: { opacity: 0, y: -50, scale: 0.5 },
+            animate: {
+              opacity: [0, 1, 1, 0],
+              y: [0, 0, 20, 20],
+              scale: [0.8, 1, 1.1, 1.1]
+            },
+            transition: {
+              duration: 3,
+              delay: 2.5,
+              repeat: Infinity,
+              ease: [0.45, 0, 0.55, 1]
+            }
+          })}
+        >
+          <div className="relative">
+            <div className="w-7 h-12 border-2 border-gray-300 rounded-full flex justify-center shadow-lg bg-white/50 backdrop-blur-sm">
+              <Container
+                className="w-2 h-2 bg-gradient-to-b from-[#1A365D] to-[#3B82F6] rounded-full mt-3"
+                {...(!isMobile && {
+                  animate: {
+                    y: [0, 15, 0],
+                    scale: [1, 0.8, 1]
+                  },
+                  transition: {
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }
+                })}
+              />
+            </div>
           </div>
-        </div>
+        </Container>
       </section>
 
       {/* Services Section */}
@@ -236,7 +569,7 @@ export default function LandingPage() {
           <div className="absolute bottom-20 left-20 w-[350px] md:w-[600px] h-[350px] md:h-[600px] bg-gradient-to-tr from-indigo-200/30 md:from-indigo-200/40 to-blue-200/40 md:to-blue-200/50 rounded-full filter blur-3xl opacity-50" />
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
-          <div className="text-center max-w-3xl mx-auto mb-12 md:mb-16 lg:mb-20">
+          <ScrollReveal className="text-center max-w-3xl mx-auto mb-12 md:mb-16 lg:mb-20">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 md:mb-6">
               Por que escolher a{' '}
               <span className="bg-gradient-to-r from-[#1A365D] to-[#3B82F6] bg-clip-text text-transparent">
@@ -246,7 +579,7 @@ export default function LandingPage() {
             <p className="text-base sm:text-lg md:text-xl text-gray-600">
               Combinamos tecnologia avançada com atendimento humanizado
             </p>
-          </div>
+          </ScrollReveal>
 
           <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
             {[
@@ -266,18 +599,17 @@ export default function LandingPage() {
                 desc: 'Profissionais com certificação internacional'
               }
             ].map((service, index) => (
-              <div
-                key={service.title}
-                className="group relative bg-white p-6 md:p-8 rounded-2xl md:rounded-3xl hover:shadow-2xl transition-all duration-500 border border-gray-100"
-              >
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#1A365D] to-[#3B82F6] opacity-0 group-hover:opacity-100 rounded-t-2xl md:rounded-t-3xl transition-opacity duration-500"></div>
+              <ScrollReveal key={service.title} delay={index * 0.2}>
+                <div className="group relative bg-white p-6 md:p-8 rounded-2xl md:rounded-3xl hover:shadow-2xl transition-all duration-500 border border-gray-100">
+                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#1A365D] to-[#3B82F6] opacity-0 group-hover:opacity-100 rounded-t-2xl md:rounded-t-3xl transition-opacity duration-500"></div>
 
-                <div className="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br from-[#1A365D] to-[#3B82F6] rounded-xl md:rounded-2xl flex items-center justify-center mb-4 md:mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <service.icon className="w-7 h-7 md:w-8 md:h-8 text-white" />
+                  <div className="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br from-[#1A365D] to-[#3B82F6] rounded-xl md:rounded-2xl flex items-center justify-center mb-4 md:mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <service.icon className="w-7 h-7 md:w-8 md:h-8 text-white" />
+                  </div>
+                  <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3">{service.title}</h3>
+                  <p className="text-sm md:text-base text-gray-600 leading-relaxed">{service.desc}</p>
                 </div>
-                <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3">{service.title}</h3>
-                <p className="text-sm md:text-base text-gray-600 leading-relaxed">{service.desc}</p>
-              </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -291,16 +623,16 @@ export default function LandingPage() {
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
           <div className="grid lg:grid-cols-2 gap-10 md:gap-16 lg:gap-20 items-center">
-            <div className="relative">
+            <ScrollReveal className="relative">
               <div className="absolute -inset-4 bg-gradient-to-r from-[#1A365D] to-[#3B82F6] rounded-2xl md:rounded-3xl opacity-10 blur-2xl"></div>
               <img
                 src="https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=800&q=80"
                 alt="Clínica SmileCare"
                 className="relative w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] object-cover rounded-2xl md:rounded-3xl shadow-2xl"
               />
-            </div>
+            </ScrollReveal>
 
-            <div className="space-y-6 md:space-y-8">
+            <ScrollReveal delay={0.3} className="space-y-6 md:space-y-8">
               <div className="space-y-4 md:space-y-6">
                 <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
                   Transformando sorrisos há{' '}
@@ -320,7 +652,7 @@ export default function LandingPage() {
                   { title: 'Tecnologia Avançada', desc: 'Equipamentos de última geração' },
                   { title: 'Atendimento Humanizado', desc: 'Cada paciente é único para nós' },
                   { title: 'Resultados Garantidos', desc: 'Excelência comprovada' }
-                ].map((item, index) => (
+                ].map((item, _index) => (
                   <div
                     key={item.title}
                     className="flex items-start gap-3 md:gap-4 p-3 md:p-4 bg-white rounded-xl md:rounded-2xl border border-gray-100 hover:shadow-lg transition-all duration-300"
@@ -333,7 +665,7 @@ export default function LandingPage() {
                   </div>
                 ))}
               </div>
-            </div>
+            </ScrollReveal>
           </div>
         </div>
       </section>
@@ -346,7 +678,7 @@ export default function LandingPage() {
           <div className="absolute bottom-1/4 right-1/4 w-[350px] md:w-[550px] h-[350px] md:h-[550px] bg-gradient-to-tl from-indigo-300/40 md:from-indigo-300/50 to-blue-200/50 md:to-blue-200/60 rounded-full filter blur-3xl opacity-40" />
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
-          <div className="text-center max-w-3xl mx-auto mb-12 md:mb-16 lg:mb-20">
+          <ScrollReveal className="text-center max-w-3xl mx-auto mb-12 md:mb-16 lg:mb-20">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 md:mb-6">
               Nossa{' '}
               <span className="bg-gradient-to-r from-[#1A365D] to-[#3B82F6] bg-clip-text text-transparent">
@@ -356,7 +688,7 @@ export default function LandingPage() {
             <p className="text-base sm:text-lg md:text-xl text-gray-600">
               Profissionais altamente qualificados e apaixonados
             </p>
-          </div>
+          </ScrollReveal>
 
           <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
             {[
@@ -379,25 +711,24 @@ export default function LandingPage() {
                 cro: 'CRO-SP 56789'
               }
             ].map((member, index) => (
-              <div
-                key={member.name}
-                className="group relative overflow-hidden rounded-2xl md:rounded-3xl cursor-pointer"
-              >
-                <div className="relative h-[350px] sm:h-[400px] md:h-[450px] overflow-hidden rounded-2xl md:rounded-3xl">
-                  <img
-                    src={member.img}
-                    alt={member.name}
-                    className="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-                </div>
+              <ScrollReveal key={member.name} delay={index * 0.2}>
+                <div className="group relative overflow-hidden rounded-2xl md:rounded-3xl cursor-pointer">
+                  <div className="relative h-[350px] sm:h-[400px] md:h-[450px] overflow-hidden rounded-2xl md:rounded-3xl">
+                    <img
+                      src={member.img}
+                      alt={member.name}
+                      className="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                  </div>
 
-                <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6 text-white">
-                  <h3 className="text-xl md:text-2xl font-bold mb-1">{member.name}</h3>
-                  <p className="text-blue-300 mb-0.5 md:mb-1 text-sm md:text-base">{member.role}</p>
-                  <p className="text-xs md:text-sm text-gray-300">{member.cro}</p>
+                  <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6 text-white">
+                    <h3 className="text-xl md:text-2xl font-bold mb-1">{member.name}</h3>
+                    <p className="text-blue-300 mb-0.5 md:mb-1 text-sm md:text-base">{member.role}</p>
+                    <p className="text-xs md:text-sm text-gray-300">{member.cro}</p>
+                  </div>
                 </div>
-              </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -411,7 +742,7 @@ export default function LandingPage() {
         </div>
 
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-12 text-center relative z-10">
-          <div>
+          <ScrollReveal>
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 md:mb-8 leading-tight">
               Pronto para transformar
               <br className="hidden sm:block" />
@@ -428,7 +759,7 @@ export default function LandingPage() {
               Agendar Minha Consulta
               <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
             </button>
-          </div>
+          </ScrollReveal>
         </div>
       </section>
 
@@ -441,7 +772,7 @@ export default function LandingPage() {
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
           <div className="grid lg:grid-cols-2 gap-10 md:gap-16 lg:gap-20">
-            <div>
+            <ScrollReveal>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 md:mb-6">
                 Entre em{' '}
                 <span className="bg-gradient-to-r from-[#1A365D] to-[#3B82F6] bg-clip-text text-transparent">
@@ -458,7 +789,7 @@ export default function LandingPage() {
                   { icon: Phone, title: 'Telefone', text: '(11) 3456-7890' },
                   { icon: Mail, title: 'Email', text: 'contato@smilecare.com.br' },
                   { icon: Clock, title: 'Horário', text: 'Seg-Sex: 8h-19h | Sáb: 8h-13h' }
-                ].map((contact, index) => (
+                ].map((contact, _index) => (
                   <div
                     key={contact.title}
                     className="flex items-start gap-3 md:gap-4 p-4 md:p-5 bg-white rounded-xl md:rounded-2xl border border-gray-100 hover:shadow-lg transition-all duration-300"
@@ -473,9 +804,9 @@ export default function LandingPage() {
                   </div>
                 ))}
               </div>
-            </div>
+            </ScrollReveal>
 
-            <div className="relative h-[350px] sm:h-[400px] md:h-[500px] rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl">
+            <ScrollReveal delay={0.3} className="relative h-[350px] sm:h-[400px] md:h-[500px] rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3657.1975779524226!2d-46.656874684605!3d-23.561414984684654!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce59c8da0aa315%3A0xd59f9431f2c9776a!2sAv.%20Paulista%2C%201000%20-%20Bela%20Vista%2C%20S%C3%A3o%20Paulo%20-%20SP!5e0!3m2!1spt-BR!2sbr!4v1234567890123!5m2!1spt-BR!2sbr"
                 width="100%"
@@ -484,7 +815,7 @@ export default function LandingPage() {
                 allowFullScreen
                 loading="lazy"
               ></iframe>
-            </div>
+            </ScrollReveal>
           </div>
         </div>
       </section>
