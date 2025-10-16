@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { X, Calendar, Clock, User, FileText, Phone, Mail } from 'lucide-react';
+import toast, { Toaster } from 'react-hot-toast';
+import { supabase } from '../lib/supabaseClient';
 
 interface AppointmentModalProps {
   isOpen: boolean;
@@ -7,6 +9,7 @@ interface AppointmentModalProps {
   onSave: (appointment: any) => void;
   selectedDate?: Date;
   selectedTime?: string;
+  clientId?: number; // ID do cliente no Supabase
 }
 
 const AppointmentModal: React.FC<AppointmentModalProps> = ({
@@ -14,7 +17,8 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
   onClose,
   onSave,
   selectedDate,
-  selectedTime
+  selectedTime,
+  clientId
 }) => {
   const [formData, setFormData] = useState({
     clientName: '',
@@ -26,11 +30,108 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
     notes: '',
     status: 'pending'
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onSave(formData);
-    onClose();
+    setIsSubmitting(true);
+
+    try {
+      // Step 1: Create booking via Cal.com API
+      const calcomApiKey = import.meta.env.VITE_CALCOM_API_KEY || 'cal_live_92a5e5dc81f8eccaa3464ccd99f6c1b7';
+
+      // Combine date and time to create ISO string for start time
+      const startDateTime = new Date(`${formData.date}T${formData.time}:00`);
+      const startISO = startDateTime.toISOString();
+
+      const calcomPayload = {
+        eventTypeId: 3473764,
+        start: startISO,
+        attendee: {
+          name: formData.clientName,
+          timeZone: "America/Sao_Paulo",
+          email: formData.clientEmail,
+          phoneNumber: formData.clientPhone,
+          language: "pt-BR"
+        }
+      };
+
+      const calcomResponse = await fetch('https://api.cal.com/v2/bookings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'cal-api-version': '2024-08-13',
+          'Authorization': `Bearer ${calcomApiKey}`
+        },
+        body: JSON.stringify(calcomPayload)
+      });
+
+      if (!calcomResponse.ok) {
+        const errorData = await calcomResponse.json().catch(() => ({}));
+        console.error('Cal.com API Error:', errorData);
+        throw new Error('Failed to schedule appointment with Cal.com');
+      }
+
+      const calcomData = await calcomResponse.json();
+      console.log('Cal.com booking created:', calcomData);
+
+      // Extract booking ID from response
+      const bookingId = calcomData.data?.id || calcomData.id || '';
+
+      // Step 2: Calculate end time (assuming 1 hour appointment)
+      const endDateTime = new Date(startDateTime);
+      endDateTime.setHours(endDateTime.getHours() + 1);
+      const endTime = endDateTime.toTimeString().slice(0, 5); // Format: HH:MM
+
+      // Step 3: Store booking in Supabase
+      const { data: supabaseData, error: supabaseError } = await supabase
+        .from('agendamentos')
+        .insert({
+          hora_inicio: formData.time,
+          hora_fim: endTime,
+          id_cliente: clientId || null,
+          id_calendario: String(bookingId),
+          cancelado: false
+        })
+        .select();
+
+      if (supabaseError) {
+        console.error('Supabase Error:', supabaseError);
+        throw new Error('Failed to save booking to database');
+      }
+
+      console.log('Supabase record created:', supabaseData);
+
+      // Success!
+      toast.success('Appointment confirmed successfully!');
+      onSave(formData);
+      onClose();
+
+      // Reset form
+      setFormData({
+        clientName: '',
+        clientPhone: '',
+        clientEmail: '',
+        date: '',
+        time: '',
+        service: '',
+        notes: '',
+        status: 'pending'
+      });
+
+    } catch (error: any) {
+      console.error('Booking error:', error);
+
+      if (error.message.includes('Cal.com')) {
+        toast.error('Failed to schedule appointment. Please try again.');
+      } else if (error.message.includes('database')) {
+        toast.error('Failed to save booking. Please contact support.');
+      } else {
+        toast.error('An unexpected error occurred. Please try again.');
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (field: string, value: string) => {
@@ -202,19 +303,22 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-6 py-3 border border-[#1C1C1C]/20 text-[#1C1C1C] font-medium hover:bg-[#E8E4DF] transition-colors"
+              disabled={isSubmitting}
+              className="flex-1 px-6 py-3 border border-[#1C1C1C]/20 text-[#1C1C1C] font-medium hover:bg-[#E8E4DF] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Cancelar
             </button>
             <button
               type="submit"
-              className="flex-1 px-6 py-3 bg-[#1C1C1C] text-[#F2EFEA] font-medium hover:bg-[#A8A29E] transition-colors"
+              disabled={isSubmitting}
+              className="flex-1 px-6 py-3 bg-[#1C1C1C] text-[#F2EFEA] font-medium hover:bg-[#A8A29E] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Agendar
+              {isSubmitting ? 'Scheduling...' : 'Agendar'}
             </button>
           </div>
         </form>
       </div>
+      <Toaster position="top-right" />
     </div>
   );
 };
