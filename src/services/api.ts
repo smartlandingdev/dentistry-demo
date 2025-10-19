@@ -1,13 +1,24 @@
+import { supabase } from "../lib/supabaseClient";
+
 const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
 
 export interface Client {
   id: number;
-  name: string;
-  phone: string;
+  nomewpp: string;
+  telefone: string;
   email: string;
+  created_at?: string;
+  updated_at?: string;
+  // Computed fields for UI
   lastVisit?: string;
   nextAppointment?: string;
-  totalVisits: number;
+  totalVisits?: number;
+}
+
+export interface ClientInput {
+  nomewpp: string;
+  telefone: string;
+  email: string;
 }
 
 export interface ApiResponse<T> {
@@ -75,9 +86,140 @@ class ApiService {
     }
   }
 
-  // ===== CLIENTS =====
+  // ===== CLIENTS (Supabase) =====
   async getClients(): Promise<ApiResponse<Client[]>> {
-    return this.request<Client[]>('/clients');
+    try {
+      const { data, error } = await supabase
+        .from('dados_cliente')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      return {
+        success: true,
+        data: data || [],
+      };
+    } catch (error) {
+      console.error('Error fetching clients:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Erro ao buscar clientes',
+      };
+    }
+  }
+
+  async getClient(id: number): Promise<ApiResponse<Client>> {
+    try {
+      const { data, error } = await supabase
+        .from('dados_cliente')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+      if (error) throw error;
+
+      return {
+        success: true,
+        data,
+      };
+    } catch (error) {
+      console.error('Error fetching client:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Erro ao buscar cliente',
+      };
+    }
+  }
+
+  async createClient(clientData: ClientInput): Promise<ApiResponse<Client>> {
+    try {
+      // Validate required fields
+      if (!clientData.email || !clientData.telefone) {
+        throw new Error('Email e telefone são obrigatórios');
+      }
+
+      // Add created_at timestamp
+      const clientDataWithTimestamp = {
+        ...clientData,
+        created_at: new Date().toISOString(),
+      };
+
+      const { data, error } = await supabase
+        .from('dados_cliente')
+        .insert([clientDataWithTimestamp])
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      return {
+        success: true,
+        data,
+        message: 'Cliente criado com sucesso',
+      };
+    } catch (error) {
+      console.error('Error creating client:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Erro ao criar cliente',
+      };
+    }
+  }
+
+  async updateClient(id: number, clientData: Partial<ClientInput>): Promise<ApiResponse<Client>> {
+    try {
+      // Validate required fields if they are being updated
+      if (clientData.email !== undefined && !clientData.email) {
+        throw new Error('Email é obrigatório');
+      }
+      if (clientData.telefone !== undefined && !clientData.telefone) {
+        throw new Error('Telefone é obrigatório');
+      }
+
+      const { data, error } = await supabase
+        .from('dados_cliente')
+        .update(clientData)
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      return {
+        success: true,
+        data,
+        message: 'Cliente atualizado com sucesso',
+      };
+    } catch (error) {
+      console.error('Error updating client:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Erro ao atualizar cliente',
+      };
+    }
+  }
+
+  async deleteClient(id: number): Promise<ApiResponse<void>> {
+    try {
+      const { error } = await supabase
+        .from('dados_cliente')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+
+      return {
+        success: true,
+        message: 'Cliente excluído com sucesso',
+      };
+    } catch (error) {
+      console.error('Error deleting client:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Erro ao excluir cliente',
+      };
+    }
   }
 
   // ===== CAL.COM =====
