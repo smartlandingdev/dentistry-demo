@@ -120,7 +120,6 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
 
       // Calculate end time (assuming 1 hour duration)
       const endDateTime = new Date(startDateTime.getTime() + 60 * 60 * 1000);
-      const endTime = endDateTime.toTimeString().slice(0, 5); // HH:MM format
 
       // Prepare Cal.com API payload
       const calcomPayload = {
@@ -360,7 +359,7 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
                         }
                         onFocus={() => setShowClientDropdown(true)}
                         onKeyDown={(e) => {
-                          if (e.key === 'Enter') {
+                          if (e.key === "Enter") {
                             e.preventDefault();
                           }
                         }}
