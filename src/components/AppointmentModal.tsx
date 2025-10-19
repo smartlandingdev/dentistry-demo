@@ -230,12 +230,12 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
       e.stopPropagation();
     }
     setSelectedClient(client);
-    setClientSearchTerm(client.name);
+    setClientSearchTerm(client.nomewpp);
     setFormData((prev) => ({
       ...prev,
       clientId: client.id,
-      clientName: client.name,
-      clientPhone: client.phone,
+      clientName: client.nomewpp,
+      clientPhone: client.telefone,
       clientEmail: client.email,
     }));
     setShowClientDropdown(false);
@@ -247,7 +247,7 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
     setShowClientDropdown(true);
 
     // Clear selection if search term doesn't match selected client
-    if (selectedClient && value !== selectedClient.name) {
+    if (selectedClient && value !== selectedClient.nomewpp) {
       setSelectedClient(null);
       setFormData((prev) => ({
         ...prev,
@@ -262,8 +262,8 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
   const filteredClients = clients.filter((client) => {
     const term = clientSearchTerm.toLowerCase();
     return (
-      (client.name && client.name.toLowerCase().includes(term)) ||
-      (client.phone && client.phone.includes(term)) ||
+      (client.nomewpp && client.nomewpp.toLowerCase().includes(term)) ||
+      (client.telefone && client.telefone.includes(term)) ||
       (client.email && client.email.toLowerCase().includes(term))
     );
   });
@@ -394,10 +394,10 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
                               className="w-full px-4 py-3 text-left hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-b-0"
                             >
                               <div className="font-semibold text-gray-900 text-sm">
-                                {client.name}
+                                {client.nomewpp}
                               </div>
                               <div className="text-xs text-gray-500 mt-1">
-                                {client.phone} • {client.email}
+                                {client.telefone} • {client.email}
                               </div>
                             </button>
                           ))}
@@ -420,7 +420,7 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
                         <div className="flex items-center gap-2">
                           <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                           <span className="text-sm font-medium text-green-800">
-                            Paciente selecionado: {selectedClient.name}
+                            Paciente selecionado: {selectedClient.nomewpp}
                           </span>
                         </div>
                       </div>
