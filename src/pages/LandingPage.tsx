@@ -56,17 +56,15 @@ export default function LandingPage() {
       <motion.div
         ref={ref}
         className={className}
-        initial={{ opacity: 0, y: 100, scale: 0.9, filter: "blur(20px)" }}
+        initial={{ opacity: 0, y: 50 }}
         animate={isInView ? {
           opacity: 1,
-          y: 0,
-          scale: 1,
-          filter: "blur(0px)"
+          y: 0
         } : {}}
         transition={{
-          duration: 1.4,
+          duration: 0.8,
           delay,
-          ease: [0.16, 1, 0.3, 1]
+          ease: [0.25, 0.46, 0.45, 0.94]
         }}
       >
         {children}
@@ -138,15 +136,14 @@ export default function LandingPage() {
             className="absolute top-1/4 right-1/4 w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-gradient-to-br from-blue-300/40 md:from-blue-300/60 to-indigo-400/30 md:to-indigo-400/50 rounded-full filter blur-3xl opacity-50"
             {...(!isMobile && {
               animate: {
-                x: [0, 120, -40, 0],
-                y: [0, -80, 50, 0],
-                scale: [1, 1.25, 0.9, 1],
-                rotate: [0, 90, 180, 360]
+                x: [0, 60, -20, 0],
+                y: [0, -40, 25, 0],
+                scale: [1, 1.1, 0.95, 1]
               },
               transition: {
-                duration: 45,
+                duration: 25,
                 repeat: Infinity,
-                ease: [0.45, 0, 0.55, 1]
+                ease: "easeInOut"
               }
             })}
           />
@@ -154,15 +151,14 @@ export default function LandingPage() {
             className="absolute bottom-1/4 left-1/4 w-[350px] md:w-[700px] h-[350px] md:h-[700px] bg-gradient-to-tr from-indigo-300/30 md:from-indigo-300/50 to-blue-400/40 md:to-blue-400/60 rounded-full filter blur-3xl opacity-40"
             {...(!isMobile && {
               animate: {
-                x: [0, -90, 60, 0],
-                y: [0, 100, -50, 0],
-                scale: [1, 1.3, 0.95, 1],
-                rotate: [0, -120, 240, 360]
+                x: [0, -45, 30, 0],
+                y: [0, 50, -25, 0],
+                scale: [1, 1.15, 0.95, 1]
               },
               transition: {
-                duration: 50,
+                duration: 30,
                 repeat: Infinity,
-                ease: [0.45, 0, 0.55, 1]
+                ease: "easeInOut"
               }
             })}
           />
@@ -171,11 +167,10 @@ export default function LandingPage() {
             {...(!isMobile && {
               animate: {
                 rotate: [0, 360],
-                scale: [1, 1.15, 0.95, 1],
-                opacity: [0.45, 0.6, 0.35, 0.45]
+                scale: [1, 1.08, 0.98, 1]
               },
               transition: {
-                duration: 60,
+                duration: 40,
                 repeat: Infinity,
                 ease: "linear"
               }
@@ -193,25 +188,20 @@ export default function LandingPage() {
                 {...(!isMobile && {
                   initial: {
                     opacity: 0,
-                    y: 100,
-                    scale: 0.5,
-                    filter: "blur(20px)",
-                    rotateX: -90
+                    y: 30,
+                    scale: 0.9
                   },
                   animate: {
                     opacity: 1,
                     y: 0,
-                    scale: 1,
-                    filter: "blur(0px)",
-                    rotateX: 0
+                    scale: 1
                   },
                   transition: {
-                    duration: 1.8,
-                    ease: [0.16, 1, 0.3, 1],
-                    delay: 0.3
+                    duration: 0.6,
+                    ease: [0.25, 0.46, 0.45, 0.94],
+                    delay: 0.1
                   }
                 })}
-                style={{ transformPerspective: 1000 }}
               >
                 <Sparkles className="w-3 h-3 md:w-4 md:h-4" />
                 <span>Excelência em Odontologia</span>
@@ -223,25 +213,20 @@ export default function LandingPage() {
                   {...(!isMobile && {
                     initial: {
                       opacity: 0,
-                      y: 120,
-                      scale: 0.8,
-                      filter: "blur(30px)",
-                      rotateX: -45
+                      y: 40,
+                      scale: 0.95
                     },
                     animate: {
                       opacity: 1,
                       y: 0,
-                      scale: 1,
-                      filter: "blur(0px)",
-                      rotateX: 0
+                      scale: 1
                     },
                     transition: {
-                      duration: 2,
-                      delay: 0.6,
-                      ease: [0.16, 1, 0.3, 1]
+                      duration: 0.7,
+                      delay: 0.2,
+                      ease: [0.25, 0.46, 0.45, 0.94]
                     }
                   })}
-                  style={{ transformPerspective: 1000 }}
                 >
                   <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 tracking-tight leading-[1.1]">
                     <span>Seu</span>{' '}
@@ -261,20 +246,16 @@ export default function LandingPage() {
                   {...(!isMobile && {
                     initial: {
                       opacity: 0,
-                      y: 80,
-                      filter: "blur(15px)",
-                      x: -50
+                      y: 30
                     },
                     animate: {
                       opacity: 1,
-                      y: 0,
-                      filter: "blur(0px)",
-                      x: 0
+                      y: 0
                     },
                     transition: {
-                      duration: 1.6,
-                      delay: 1,
-                      ease: [0.16, 1, 0.3, 1]
+                      duration: 0.7,
+                      delay: 0.3,
+                      ease: [0.25, 0.46, 0.45, 0.94]
                     }
                   })}
                 >
@@ -291,20 +272,16 @@ export default function LandingPage() {
                 {...(!isMobile && {
                   initial: {
                     opacity: 0,
-                    y: 60,
-                    scale: 0.9,
-                    filter: "blur(10px)"
+                    y: 30
                   },
                   animate: {
                     opacity: 1,
-                    y: 0,
-                    scale: 1,
-                    filter: "blur(0px)"
+                    y: 0
                   },
                   transition: {
-                    duration: 1.5,
-                    delay: 1.3,
-                    ease: [0.16, 1, 0.3, 1]
+                    duration: 0.7,
+                    delay: 0.4,
+                    ease: [0.25, 0.46, 0.45, 0.94]
                   }
                 })}
               >
@@ -313,31 +290,26 @@ export default function LandingPage() {
                   className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-[#1A365D] to-[#3B82F6] text-white text-sm font-semibold rounded-xl hover:shadow-2xl transition-all duration-500 flex items-center justify-center gap-2 md:gap-3 group relative overflow-hidden"
                   {...(!isMobile && {
                     whileHover: {
-                      scale: 1.08,
-                      y: -6,
-                      boxShadow: "0 20px 60px rgba(59, 130, 246, 0.5)",
-                      rotateX: 5
+                      scale: 1.05,
+                      y: -4
                     },
-                    whileTap: { scale: 0.95 },
-                    transition: { type: "spring", stiffness: 300, damping: 15 }
+                    whileTap: { scale: 0.98 },
+                    transition: { duration: 0.2 }
                   })}
-                  style={{ transformPerspective: 1000 }}
                 >
                   <span>Agendar Consulta</span>
                   <ArrowRight className="w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-2 transition-transform duration-300" />
                 </Button>
 
                 <Button
-                  className="px-6 sm:px-8 py-3 sm:py-4 border-2 border-gray-200 text-gray-700 text-sm font-semibold rounded-xl hover:border-[#3B82F6] hover:text-[#3B82F6] transition-all duration-500"
+                  className="px-6 sm:px-8 py-3 sm:py-4 border-2 border-gray-200 text-gray-700 text-sm font-semibold rounded-xl hover:border-[#3B82F6] hover:text-[#3B82F6] transition-all duration-300"
                   {...(!isMobile && {
                     whileHover: {
-                      scale: 1.08,
-                      y: -4,
-                      borderColor: "#3B82F6",
-                      boxShadow: "0 10px 40px rgba(59, 130, 246, 0.3)"
+                      scale: 1.05,
+                      y: -2
                     },
-                    whileTap: { scale: 0.95 },
-                    transition: { type: "spring", stiffness: 300, damping: 15 }
+                    whileTap: { scale: 0.98 },
+                    transition: { duration: 0.2 }
                   })}
                 >
                   Saiba Mais
@@ -350,20 +322,16 @@ export default function LandingPage() {
                 {...(!isMobile && {
                   initial: {
                     opacity: 0,
-                    y: 50,
-                    filter: "blur(10px)",
-                    scale: 0.95
+                    y: 30
                   },
                   animate: {
                     opacity: 1,
-                    y: 0,
-                    filter: "blur(0px)",
-                    scale: 1
+                    y: 0
                   },
                   transition: {
-                    duration: 1.5,
-                    delay: 1.6,
-                    ease: [0.16, 1, 0.3, 1]
+                    duration: 0.7,
+                    delay: 0.5,
+                    ease: [0.25, 0.46, 0.45, 0.94]
                   }
                 })}
               >
@@ -406,25 +374,20 @@ export default function LandingPage() {
               {...(!isMobile && {
                 initial: {
                   opacity: 0,
-                  x: 200,
-                  scale: 0.7,
-                  rotateY: 45,
-                  filter: "blur(30px)"
+                  x: 60,
+                  scale: 0.95
                 },
                 animate: {
                   opacity: 1,
                   x: 0,
-                  scale: 1,
-                  rotateY: 0,
-                  filter: "blur(0px)"
+                  scale: 1
                 },
                 transition: {
-                  duration: 2.2,
-                  delay: 0.5,
-                  ease: [0.16, 1, 0.3, 1]
+                  duration: 0.8,
+                  delay: 0.2,
+                  ease: [0.25, 0.46, 0.45, 0.94]
                 }
               })}
-              style={{ transformStyle: "preserve-3d", perspective: 2000 }}
             >
               <SplineViewer />
 
@@ -434,34 +397,27 @@ export default function LandingPage() {
                 {...(!isMobile && {
                   initial: {
                     opacity: 0,
-                    x: -100,
-                    y: -100,
-                    scale: 0.3,
-                    rotateZ: -45,
-                    filter: "blur(20px)"
+                    x: -40,
+                    y: -20,
+                    scale: 0.9
                   },
                   animate: {
                     opacity: 1,
                     x: 0,
                     y: 0,
-                    scale: 1,
-                    rotateZ: 0,
-                    filter: "blur(0px)"
+                    scale: 1
                   },
                   transition: {
-                    duration: 1.8,
-                    delay: 1.5,
-                    ease: [0.16, 1, 0.3, 1]
+                    duration: 0.6,
+                    delay: 0.5,
+                    ease: [0.25, 0.46, 0.45, 0.94]
                   },
                   whileHover: {
-                    scale: 1.15,
-                    y: -15,
-                    rotateY: 10,
-                    boxShadow: "0 30px 80px rgba(59, 130, 246, 0.4)",
-                    transition: { type: "spring", stiffness: 300, damping: 12 }
+                    scale: 1.08,
+                    y: -8,
+                    transition: { duration: 0.2 }
                   }
                 })}
-                style={{ transformStyle: "preserve-3d" }}
               >
                 <div className="flex items-center gap-4">
                   <div className="w-16 h-16 bg-gradient-to-br from-[#1A365D] to-[#3B82F6] rounded-2xl flex items-center justify-center shadow-lg">
@@ -479,34 +435,27 @@ export default function LandingPage() {
                 {...(!isMobile && {
                   initial: {
                     opacity: 0,
-                    x: 100,
-                    y: 100,
-                    scale: 0.3,
-                    rotateZ: 45,
-                    filter: "blur(20px)"
+                    x: 40,
+                    y: 20,
+                    scale: 0.9
                   },
                   animate: {
                     opacity: 1,
                     x: 0,
                     y: 0,
-                    scale: 1,
-                    rotateZ: 0,
-                    filter: "blur(0px)"
+                    scale: 1
                   },
                   transition: {
-                    duration: 1.8,
-                    delay: 1.8,
-                    ease: [0.16, 1, 0.3, 1]
+                    duration: 0.6,
+                    delay: 0.6,
+                    ease: [0.25, 0.46, 0.45, 0.94]
                   },
                   whileHover: {
-                    scale: 1.15,
-                    y: -15,
-                    rotateY: -10,
-                    boxShadow: "0 30px 80px rgba(245, 158, 11, 0.4)",
-                    transition: { type: "spring", stiffness: 300, damping: 12 }
+                    scale: 1.08,
+                    y: -8,
+                    transition: { duration: 0.2 }
                   }
                 })}
-                style={{ transformStyle: "preserve-3d" }}
               >
                 <div className="flex items-center gap-4">
                   <div className="w-16 h-16 bg-gradient-to-br from-[#1A365D] to-[#3B82F6] rounded-2xl flex items-center justify-center shadow-lg">
@@ -526,17 +475,16 @@ export default function LandingPage() {
         <Container
           className="absolute bottom-10 left-1/2 transform -translate-x-1/2 hidden lg:block"
           {...(!isMobile && {
-            initial: { opacity: 0, y: -50, scale: 0.5 },
+            initial: { opacity: 0, y: -20 },
             animate: {
               opacity: [0, 1, 1, 0],
-              y: [0, 0, 20, 20],
-              scale: [0.8, 1, 1.1, 1.1]
+              y: [0, 0, 15, 15]
             },
             transition: {
-              duration: 3,
-              delay: 2.5,
+              duration: 2.5,
+              delay: 1,
               repeat: Infinity,
-              ease: [0.45, 0, 0.55, 1]
+              ease: "easeInOut"
             }
           })}
         >
@@ -546,11 +494,10 @@ export default function LandingPage() {
                 className="w-2 h-2 bg-gradient-to-b from-[#1A365D] to-[#3B82F6] rounded-full mt-3"
                 {...(!isMobile && {
                   animate: {
-                    y: [0, 15, 0],
-                    scale: [1, 0.8, 1]
+                    y: [0, 12, 0]
                   },
                   transition: {
-                    duration: 2,
+                    duration: 1.5,
                     repeat: Infinity,
                     ease: "easeInOut"
                   }

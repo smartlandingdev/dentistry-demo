@@ -62,12 +62,13 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Performance optimizations - Force GPU acceleration */
-* {
+/* Performance optimizations - Selective GPU acceleration */
+.gpu-accelerated {
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  -webkit-perspective: 1000;
-  perspective: 1000;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 /* Selection */
@@ -78,11 +79,15 @@ html {
 
 /* Optimize animations for smooth performance */
 @media (prefers-reduced-motion: no-preference) {
-  motion-div,
-  [style*="willChange"],
-  .motion-element {
+  .animate-smooth {
     transform: translate3d(0, 0, 0);
   }
+}
+
+/* Optimize motion elements */
+.motion-safe {
+  will-change: transform, opacity;
+  transform: translateZ(0);
 }
 
 /* Focus Styles */
@@ -128,17 +133,14 @@ spline-viewer canvas {
   height: 100%;
 }
 
-/* Optimize backdrop-blur and filter blur for better performance */
-.backdrop-blur-lg,
-.backdrop-blur-xl,
-[class*="backdrop-blur"] {
-  -webkit-backdrop-filter: blur(16px);
-  backdrop-filter: blur(16px);
-  will-change: backdrop-filter;
+/* Optimize backdrop-blur for better performance */
+.backdrop-blur-optimized {
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  transform: translateZ(0);
 }
 
 /* Optimize gradient animations */
-[class*="bg-gradient"] {
-  will-change: transform, opacity;
+.gradient-animated {
   transform: translateZ(0);
 }
